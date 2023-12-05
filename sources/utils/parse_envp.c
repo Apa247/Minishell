@@ -6,7 +6,7 @@
 /*   By: daparici <daparici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 12:33:17 by jverdu-r          #+#    #+#             */
-/*   Updated: 2023/11/29 16:18:33 by jverdu-r         ###   ########.fr       */
+/*   Updated: 2023/12/05 18:16:13 by daparici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ char	*get_home(void)
 	char	*aux;
 	char	*home;
 	char	*dir;
-	int	i[2];
+	int		i[2];
 
 	i[0] = 0;
 	i[1] = 0;
