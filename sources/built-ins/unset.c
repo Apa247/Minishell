@@ -6,11 +6,28 @@
 /*   By: davidaparicio <davidaparicio@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 19:50:15 by daparici          #+#    #+#             */
-/*   Updated: 2023/11/25 21:41:55 by davidaparic      ###   ########.fr       */
+/*   Updated: 2023/12/08 00:00:54 by davidaparic      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+int     ft_check_equal(char *arg)
+{
+    int i;
+
+    i = 0;
+    while (arg[i])
+    {
+        if (arg[i] == '=')
+        {
+            export_error(arg);
+            return (1);
+        }
+        i++;
+    }
+    return (0);
+}
 
 void	ft_unset(t_toolbox *tools)
 {
@@ -26,12 +43,17 @@ void	ft_unset(t_toolbox *tools)
             j = 0;
             while (tools->env[j])
             {
-                if (!strncmp(tools->env[j], tools->cmd->args[i], ft_strlen(tools->cmd->args[i])))
+                if (!check_parametres(tools->cmd->args[i]) && !ft_check_equal(tools->cmd->args[i]))
                 {
-                    tmp = delete_variable(tools->env, j);
-                    free(tools->env);
-                    tools->env = tmp;
+                    if (!strncmp(tools->env[j], tools->cmd->args[i], lenght_to_equal(tools->cmd->args[i])))
+                    {
+                        tmp = delete_variable(tools->env, j);
+                        free(tools->env);
+                        tools->env = tmp;
+                    }
                 }
+                else
+                    break ;
                 j++;
             }
             i++;
@@ -43,8 +65,10 @@ char    **delete_variable(char **env, int i)
 {
     char    **env_copy;
     int     j;
+    int     k;
 
     j = 0;
+    k = 0;
     while (env[j])
         j++;
     env_copy = ft_calloc(sizeof(char *), j);
@@ -54,11 +78,14 @@ char    **delete_variable(char **env, int i)
     while (env[j])
     {
         if (j == i)
-            free(env[i]);
-        else
-            env_copy[j] = env[j];
+        {
+            free(env[j]);
+            j++;
+        }
+        env_copy[k] = env[j];
         j++;
+        k++;
     }
-    env_copy[j] = 0;
+    env_copy[k] = 0;
     return(env_copy);
 }

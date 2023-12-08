@@ -6,7 +6,7 @@
 /*   By: davidaparicio <davidaparicio@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 16:56:27 by daparici          #+#    #+#             */
-/*   Updated: 2023/12/05 10:21:20 by davidaparic      ###   ########.fr       */
+/*   Updated: 2023/12/07 22:26:00 by davidaparic      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void	print_arguments(char **arg, int i);
 int		ft_pwd(void);
 // 	env
 void	ft_env(char **env);
+int     check_equal_env(char *env);
 //	export
 void	ft_export(t_toolbox *tools);
 char	**add_variable(char **sort_env, char *cmd_arg);
@@ -47,6 +48,7 @@ char	**delete_variable(char **env, int i);
 // unset
 void	ft_unset(t_toolbox *tools);
 char	**delete_variable(char **env, int i);
+int     ft_check_equal(char *arg);
 
 // cd
 void	ft_cd(t_toolbox *tools);

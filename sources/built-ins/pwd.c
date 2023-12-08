@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: daparici <daparici@student.42.fr>          +#+  +:+       +#+        */
+/*   By: davidaparicio <davidaparicio@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 18:27:31 by daparici          #+#    #+#             */
-/*   Updated: 2023/09/09 17:39:32 by daparici         ###   ########.fr       */
+/*   Updated: 2023/12/08 00:44:53 by davidaparic      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	ft_pwd(void)
 	{
 		perror("Error al obtener el directorio actual");
 		free(buffer);
-		exit(EXIT_FAILURE);
+		return (EXIT_FAILURE);
 	}
 	ft_putstr_fd(current_directory, STDOUT_FILENO);
 	ft_putchar_fd('\n', STDOUT_FILENO);

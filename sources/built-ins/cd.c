@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: daparici <daparici@student.42.fr>          +#+  +:+       +#+        */
+/*   By: davidaparicio <davidaparicio@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 21:39:42 by davidaparic       #+#    #+#             */
-/*   Updated: 2023/12/05 18:19:53 by daparici         ###   ########.fr       */
+/*   Updated: 2023/12/08 04:29:32 by davidaparic      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,24 +41,31 @@ void	render_env(t_toolbox *tools)
 {
 	char	*oldpwd;
 	char	*pwd;
+	char	*current_dir;
 
-	if (tools->old_pwd)
+	current_dir = getcwd(NULL, 0);
+	if (current_dir != NULL)
+	{
 		free(tools->old_pwd);
-	tools->old_pwd = ft_strdup(tools->pwd);
-	free(tools->pwd);
-	tools->pwd = getcwd(NULL, 0);
-	pwd = ft_strjoin("PWD=", tools->pwd);
-	oldpwd = ft_strjoin("OLDPWD=", tools->old_pwd);
-	check_variable_exist(tools, pwd);
-	check_variable_exist(tools, oldpwd);
-	free(pwd);
-	free(oldpwd);
+		tools->old_pwd = ft_strdup(tools->pwd);
+		free(tools->pwd);
+		tools->pwd = getcwd(NULL, 0);
+		pwd = ft_strjoin("PWD=", tools->pwd);
+		oldpwd = ft_strjoin("OLDPWD=", tools->old_pwd);
+		check_variable_exist(tools, pwd);
+		check_variable_exist(tools, oldpwd);
+		free(pwd);
+		free(oldpwd);
+	}
+	free(current_dir);
 }
 
 void	ft_cd(t_toolbox *tools)
 {
 	char	*dir;
+	int		dir_status;
 
+	dir_status = 0;
 	if (!tools->cmd->args)
 	{
 		dir = get_env_dir(tools, "HOME=");
@@ -69,13 +76,16 @@ void	ft_cd(t_toolbox *tools)
 	}
 	else
 	{
-		if (chdir(tools->cmd->args[0]) == -1)
+		dir_status = chdir(tools->cmd->args[0]);
+		if (dir_status == -1)
 		{
 			ft_putstr_fd("minishell: cd: ", 2);
 			ft_putstr_fd(tools->cmd->args[0], 2);
 			ft_putstr_fd(" not set\n", 2);
 		}
 		else
+		{
 			render_env(tools);
+		}
 	}
 }
