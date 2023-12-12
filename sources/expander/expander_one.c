@@ -72,10 +72,8 @@ char	**check_args(char **args, char **env, int t)
 void	expander(t_toolbox *tools)
 {
 	t_command	*cmd;
-	int			i;
 
 	cmd = tools->cmd;
-	i = 0;
 	while (cmd)
 	{
 		if (ft_strlen(cmd->cmd) > 2)

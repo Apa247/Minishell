@@ -54,7 +54,7 @@ char	*get_home(void);
 void	sort_arr(char **arr);
 //utility functions
 //char		*expander(t_toolbox *tools, char *str);
-void		free_arr(char **arr);
+void	free_arr(char **arr);
 int		handle_quotes(char *input);
 int		check_input(t_toolbox *tools);
 int		check_quotes(char *str);

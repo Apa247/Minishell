@@ -31,9 +31,6 @@ int	lexer_length(t_lexer *list)
 
 void	lexer_free(t_lexer *list)
 {
-	int	i;
-
-	i = 0;
 	if (list)
 	{
 		while (list->next)

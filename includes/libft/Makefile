@@ -31,7 +31,7 @@ CC		= gcc
 
 RM		= rm -f
 
-CFLAGS	= -Wall -Werror -Wextra -glldb
+CFLAGS	= -Wall -Werror -Wextra 
 
 .c.o:
 		${CC} ${CFLAGS} -c $< -o $@

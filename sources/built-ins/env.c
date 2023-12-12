@@ -26,7 +26,7 @@ int     check_equal_env(char *env)
     return (0);
 }
 
-void    ft_env(char **env)
+int    ft_env(char **env)
 {
     int i;
 
@@ -37,4 +37,5 @@ void    ft_env(char **env)
             ft_putendl_fd(env[i], STDOUT_FILENO);
         i++;
     }
+    return (EXIT_SUCCESS);
 }

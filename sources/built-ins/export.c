@@ -63,7 +63,7 @@ char	**add_variable(char **sort_env, char *cmd_arg)
 	return (copy_env);
 }
 
-void	ft_export(t_toolbox *tools)
+int		ft_export(t_toolbox *tools)
 {
 	int		i;
 	char	**tmp;
@@ -88,4 +88,5 @@ void	ft_export(t_toolbox *tools)
 			i++;
 		}
 	}
+	return (EXIT_SUCCESS);
 }

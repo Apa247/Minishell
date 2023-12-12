@@ -60,7 +60,7 @@ void	render_env(t_toolbox *tools)
 	free(current_dir);
 }
 
-void	ft_cd(t_toolbox *tools)
+int		ft_cd(t_toolbox *tools)
 {
 	char	*dir;
 	int		dir_status;
@@ -88,4 +88,5 @@ void	ft_cd(t_toolbox *tools)
 			render_env(tools);
 		}
 	}
+	return (EXIT_SUCCESS);
 }

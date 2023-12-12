@@ -20,16 +20,16 @@ int	error_msg(char *msg)
 
 int	error_token(t_token token)
 {
-	printf("minishell: sintax error near unexpected ", STDERR_FILENO);
+	printf("%iminishell: sintax error near unexpected ", STDERR_FILENO);
 	if (token == PIPE)
-		printf("'|'\n", STDERR_FILENO);
+		printf("'|'%i\n", STDERR_FILENO);
 	if (token == LESS)
-		printf("'<'\n", STDERR_FILENO);
+		printf("'<'%i\n", STDERR_FILENO);
 	if (token == LESS_LESS)
-		printf("'<<'\n", STDERR_FILENO);
+		printf("'<<'%i\n", STDERR_FILENO);
 	if (token == GREAT)
-		printf("'>'\n", STDERR_FILENO);
+		printf("'>'%i\n", STDERR_FILENO);
 	if (token == GREAT_GREAT)
-		printf("'>>'\n", STDERR_FILENO);
+		printf("'>>'%i\n", STDERR_FILENO);
 	return (-1);
 }

@@ -23,7 +23,7 @@ void	print_arguments(char **arg, int i)
 	}
 }
 
-void	ft_echo(t_command *cmd)
+int		ft_echo(t_command *cmd)
 {
 	int		flag;
 	size_t	i;
@@ -45,4 +45,5 @@ void	ft_echo(t_command *cmd)
 		print_arguments(cmd->args, i);
 	if (flag == 0)
 		ft_putchar_fd('\n', STDOUT_FILENO);
+	return (EXIT_SUCCESS);
 }

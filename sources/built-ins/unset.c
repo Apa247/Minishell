@@ -29,7 +29,7 @@ int     ft_check_equal(char *arg)
     return (0);
 }
 
-void	ft_unset(t_toolbox *tools)
+int 	ft_unset(t_toolbox *tools)
 {
     int i;
     int j;
@@ -59,6 +59,7 @@ void	ft_unset(t_toolbox *tools)
             i++;
         }
     }
+    return (EXIT_SUCCESS);
 }
 
 char    **delete_variable(char **env, int i)
