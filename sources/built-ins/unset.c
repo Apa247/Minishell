@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: davidaparicio <davidaparicio@student.42    +#+  +:+       +#+        */
+/*   By: daparici <daparici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 19:50:15 by daparici          #+#    #+#             */
-/*   Updated: 2023/12/08 00:00:54 by davidaparic      ###   ########.fr       */
+/*   Updated: 2023/12/12 18:28:17 by daparici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int 	ft_unset(t_toolbox *tools)
             {
                 if (!check_parametres(tools->cmd->args[i]) && !ft_check_equal(tools->cmd->args[i]))
                 {
-                    if (!strncmp(tools->env[j], tools->cmd->args[i], lenght_to_equal(tools->cmd->args[i])))
+                    if (!ft_strncmp(tools->env[j], tools->cmd->args[i], lenght_to_equal(tools->cmd->args[i])))
                     {
                         tmp = delete_variable(tools->env, j);
                         free(tools->env);
