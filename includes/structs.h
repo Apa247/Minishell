@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jverdu-r <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: daparici <daparici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 10:25:27 by jverdu-r          #+#    #+#             */
-/*   Updated: 2023/11/03 17:14:40 by jverdu-r         ###   ########.fr       */
+/*   Updated: 2024/01/24 19:37:40 by daparici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STRUCTS_H
-#define STRUCTS_H
+#define	STRUCTS_H
 
-typedef enum	s_token
+typedef enum s_token
 {
 	PIPE = 1,
 	LESS,
@@ -22,27 +22,27 @@ typedef enum	s_token
 	GREAT_GREAT
 }	t_token;
 
-typedef struct  s_redir
+typedef struct	s_redir
 {
-    char    *file;
-    struct s_redir   *next;
-    struct s_redir   *prev;
-}   t_redir;
+	char			*file;
+	struct s_redir	*next;
+	struct s_redir	*prev;
+}	t_redir;
 
 typedef struct s_command
 {
-    char                *cmd;
+	char				*cmd;
 	char				*append;
 	int					heredoc;
-    char                **limiter;
-    char                **args;
+	char				**limiter;
+	char				**args;
 	int					out_fd;
 	int					in_fd;
-    t_redir             *in_files;
+	t_redir				*in_files;
 	t_redir				*out_files;
-    struct s_command    *next;
-    struct s_command    *prev;
-}   t_command;
+	struct s_command	*next;
+	struct s_command	*prev;
+}	t_command;
 
 typedef enum	s_bool
 {
