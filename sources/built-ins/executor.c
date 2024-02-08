@@ -6,25 +6,25 @@
 /*   By: daparici <daparici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 16:53:02 by daparici          #+#    #+#             */
-/*   Updated: 2024/01/24 20:16:55 by daparici         ###   ########.fr       */
+/*   Updated: 2024/02/06 17:50:50 by daparici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
 void	ft_executor_primary(t_command *cmd)
 {
 	int			pip[2];
 	int			pid;
-	t_command	
+	t_command	cmd_aux;
 
+	aux = cmd;
 	if (heredoc == ok)
 	{
-		pip[0] = ft_heredoc()
+		pip[0] = ft_heredoc();
 	}
-	
 	while (cmd)
 	{
-		
 	}
 }
 

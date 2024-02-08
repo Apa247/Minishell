@@ -6,7 +6,7 @@
 /*   By: daparici <daparici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 12:48:17 by jverdu-r          #+#    #+#             */
-/*   Updated: 2024/01/24 19:46:10 by daparici         ###   ########.fr       */
+/*   Updated: 2024/02/06 17:51:19 by daparici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ t_command	*init_cmd(void)
 	cmd->args = NULL;
 	cmd->in_fd = 0;
 	cmd->in_files = NULL;
-	cmd->out_fd = 0;
+	cmd->out_fd = 1;
 	cmd->out_files = NULL;
 	cmd->next = NULL;
 	cmd->prev = NULL;
