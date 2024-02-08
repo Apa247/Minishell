@@ -6,7 +6,7 @@
 /*   By: daparici <daparici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 15:07:55 by jverdu-r          #+#    #+#             */
-/*   Updated: 2023/11/23 18:12:30 by daparici         ###   ########.fr       */
+/*   Updated: 2024/02/08 18:08:30 by daparici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,14 +59,15 @@ int		handle_quotes(char *input);
 int		check_input(t_toolbox *tools);
 int		check_quotes(char *str);
 int		exit_code(void);
-t_bool switch_bool(t_bool bool);
+t_bool	switch_bool(t_bool bool);
 
 //error functions
 int		error_msg(char *msg);
 int		error_token(t_token token);
 
-//built-ins funcion
-//void	ft_executor(t_sp_cmds *exec_list, t_toolbox *tools);
+//executor funcion
+void	ft_executor(t_command *cmd);
+int		ft_is_builtin(t_toolbox *tools);
 //  echo
 //void	ft_echo(t_sp_cmds *sp_cmds);
 void	print_arguments(char **arg, int i);

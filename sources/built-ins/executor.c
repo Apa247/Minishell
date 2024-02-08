@@ -6,13 +6,13 @@
 /*   By: daparici <daparici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 16:53:02 by daparici          #+#    #+#             */
-/*   Updated: 2024/02/06 17:50:50 by daparici         ###   ########.fr       */
+/*   Updated: 2024/02/08 18:08:51 by daparici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	ft_executor_primary(t_command *cmd)
+void	ft_executor(t_command *cmd)
 {
 	int			pip[2];
 	int			pid;
@@ -25,10 +25,11 @@ void	ft_executor_primary(t_command *cmd)
 	}
 	while (cmd)
 	{
+		
 	}
 }
 
-int	ft_executor(t_toolbox *tools)
+int	ft_is_builtin(t_toolbox *tools)
 {
 	t_command	*cmd;
 
