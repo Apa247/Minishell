@@ -6,28 +6,31 @@
 /*   By: daparici <daparici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 16:53:02 by daparici          #+#    #+#             */
-/*   Updated: 2024/02/08 18:08:51 by daparici         ###   ########.fr       */
+/*   Updated: 2024/02/21 20:51:03 by daparici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
+void	recursive_ex(int pre_pipe, t_command *cmd, int count, int limit)
+{
+	
+}
+
 void	ft_executor(t_command *cmd)
 {
 	int			pip[2];
-	int			pid;
-	t_command	cmd_aux;
+	int			*pid;
+	t_command	*cmd_aux;
+	int			count:
+	int			limit;
 
-	aux = cmd;
-	if (heredoc == ok)
-	{
-		pip[0] = ft_heredoc();
+	cmd_aux = cmd;
+	count = 0;
+	limit = ft_lstsize(cmd);
+	pid = malloc(sizeof(int) * ft_lstsize(cmd));
+	recursive_ex
 	}
-	while (cmd)
-	{
-		
-	}
-}
 
 int	ft_is_builtin(t_toolbox *tools)
 {

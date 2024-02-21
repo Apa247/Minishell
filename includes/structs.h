@@ -6,7 +6,7 @@
 /*   By: daparici <daparici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 10:25:27 by jverdu-r          #+#    #+#             */
-/*   Updated: 2024/02/06 17:50:18 by daparici         ###   ########.fr       */
+/*   Updated: 2024/02/21 19:52:10 by daparici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ typedef struct s_command
 	char				**args;
 	int					out_fd;
 	int					in_fd;
+	int					pid;
 	t_redir				*in_files;
 	t_redir				*out_files;
 	struct s_command	*next;
