@@ -6,31 +6,53 @@
 /*   By: daparici <daparici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 16:53:02 by daparici          #+#    #+#             */
-/*   Updated: 2024/02/21 20:51:03 by daparici         ###   ########.fr       */
+/*   Updated: 2024/03/06 19:16:01 by daparici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
+
+
 void	recursive_ex(int pre_pipe, t_command *cmd, int count, int limit)
 {
-	
+	int	ac_pipe[2];
+
+	pipe(ac_pipe);
+	cmd->pid = fork();
+	if (cmd->pid < 0)
+		perror("minishell:");
+	else if (cmd->pid == 0)
+	{
+		if (cmd->here_doc && !cmd->args)
+		{
+			if (dup2(cmd->here_doc, 0))
+				perror("minishell");
+			close(cmd->here_doc);
+		}
+		else
+		{
+			if (cmd->in_fd > 2)
+			{
+				if (dup2(cmd->in_file, 0))
+					perror("minishell");
+				close ()
+		}
+	}
 }
 
 void	ft_executor(t_command *cmd)
 {
-	int			pip[2];
-	int			*pid;
+	int			ac_pipe[2];
 	t_command	*cmd_aux;
-	int			count:
+	int			count;
 	int			limit;
 
 	cmd_aux = cmd;
 	count = 0;
 	limit = ft_lstsize(cmd);
-	pid = malloc(sizeof(int) * ft_lstsize(cmd));
-	recursive_ex
-	}
+	recursive_ex(ac_pipe, cmd_aux, count, limit);
+}
 
 int	ft_is_builtin(t_toolbox *tools)
 {
