@@ -6,24 +6,24 @@
 /*   By: daparici <daparici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 16:53:02 by daparici          #+#    #+#             */
-/*   Updated: 2024/03/07 15:59:45 by daparici         ###   ########.fr       */
+/*   Updated: 2024/03/07 16:25:19 by daparici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int	manage_dups(t_command *cmd, int *pre_pipe, int *ac_pipe)
+void	manage_dups(t_command *cmd, int *pre_pipe, int *ac_pipe)
 {
 	if (cmd->prev)
 	{
 		if (dup2(pre_pipe[0], 0))
-			(perror("minishell:"), exit(1))
+			(perror("minishell:"), exit(1), 1);
 		close(pre_pipe[0]);
 	}
 	if (cmd->next)
 	{
 		if (dup2(ac_pipe[1], 1))
-			(perror("minishell:"), exit(1))
+			(perror("minishell:"), exit(1));
 		close(ac_pipe[1]);
 	}
 	if (cmd->in_fd > 2)
@@ -58,6 +58,11 @@ void	recursive_ex(int *pre_pipe, t_command *cmd)
 		}
 		else
 		{
+			(close(pre_pipe[1]), close(ac_pipe[0]));
+			if (!cmd->prev)
+				close(pre_pipe[0]);
+			if (!cmd->next)
+				close(ac_pipe[1]);
 			manage_dups(cmd, pre_pipe, ac_pipe);
 		}
 	}
@@ -67,7 +72,7 @@ void	recursive_ex(int *pre_pipe, t_command *cmd)
 		{
 			close(pre_pipe[0]);
 			close(pre_pipe[1]);
-			recursive_ex()
+			recursive_ex(ac_pipe, cmd->next);
 		}
 	}
 }
