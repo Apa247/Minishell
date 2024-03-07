@@ -6,37 +6,68 @@
 /*   By: daparici <daparici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 16:53:02 by daparici          #+#    #+#             */
-/*   Updated: 2024/03/06 19:16:01 by daparici         ###   ########.fr       */
+/*   Updated: 2024/03/07 15:59:45 by daparici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
+int	manage_dups(t_command *cmd, int *pre_pipe, int *ac_pipe)
+{
+	if (cmd->prev)
+	{
+		if (dup2(pre_pipe[0], 0))
+			(perror("minishell:"), exit(1))
+		close(pre_pipe[0]);
+	}
+	if (cmd->next)
+	{
+		if (dup2(ac_pipe[1], 1))
+			(perror("minishell:"), exit(1))
+		close(ac_pipe[1]);
+	}
+	if (cmd->in_fd > 2)
+	{
+		if (dup2(cmd->in_fd, 0))
+			(perror("minishell:"), exit(1));
+		close(cmd->in_fd);
+	}
+	if (cmd->out_fd > 2)
+	{
+		if (dup2(cmd->out_fd, 1))
+			(perror("minishell:"), exit(1));
+		close(cmd->out_fd);
+	}
+}
 
-
-void	recursive_ex(int pre_pipe, t_command *cmd, int count, int limit)
+void	recursive_ex(int *pre_pipe, t_command *cmd)
 {
 	int	ac_pipe[2];
 
 	pipe(ac_pipe);
 	cmd->pid = fork();
 	if (cmd->pid < 0)
-		perror("minishell:");
+		(perror("minishell:"), exit(1));
 	else if (cmd->pid == 0)
 	{
-		if (cmd->here_doc && !cmd->args)
+		if (cmd->here_doc && !cmd->args && cmd->in_fd <= 2)
 		{
 			if (dup2(cmd->here_doc, 0))
-				perror("minishell");
-			close(cmd->here_doc);
+				(perror("minishell"), exit(1));
+			close(cmd->here_doc[0]);
 		}
 		else
 		{
-			if (cmd->in_fd > 2)
-			{
-				if (dup2(cmd->in_file, 0))
-					perror("minishell");
-				close ()
+			manage_dups(cmd, pre_pipe, ac_pipe);
+		}
+	}
+	else
+	{
+		if (cmd->next)
+		{
+			close(pre_pipe[0]);
+			close(pre_pipe[1]);
+			recursive_ex()
 		}
 	}
 }
@@ -45,12 +76,8 @@ void	ft_executor(t_command *cmd)
 {
 	int			ac_pipe[2];
 	t_command	*cmd_aux;
-	int			count;
-	int			limit;
 
 	cmd_aux = cmd;
-	count = 0;
-	limit = ft_lstsize(cmd);
 	recursive_ex(ac_pipe, cmd_aux, count, limit);
 }
 
