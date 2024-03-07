@@ -6,7 +6,7 @@
 /*   By: daparici <daparici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 15:07:55 by jverdu-r          #+#    #+#             */
-/*   Updated: 2023/11/23 18:12:30 by daparici         ###   ########.fr       */
+/*   Updated: 2024/03/07 19:14:51 by daparici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,7 @@ t_bool switch_bool(t_bool bool);
 int		error_msg(char *msg);
 int		error_token(t_token token);
 
-//built-ins funcion
-//void	ft_executor(t_sp_cmds *exec_list, t_toolbox *tools);
+//built-in
 //  echo
 //void	ft_echo(t_sp_cmds *sp_cmds);
 void	print_arguments(char **arg, int i);

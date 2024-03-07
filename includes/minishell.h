@@ -6,7 +6,7 @@
 /*   By: daparici <daparici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 15:07:55 by jverdu-r          #+#    #+#             */
-/*   Updated: 2024/02/08 18:08:30 by daparici         ###   ########.fr       */
+/*   Updated: 2024/03/07 18:53:51 by daparici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@
 
 //test
 t_command   *cmd_extract(t_lexer *list);
-int check_syntax(t_lexer *tk_list);
+int 		check_syntax(t_lexer *tk_list);
 
 
 //signal functions
@@ -66,7 +66,6 @@ int		error_msg(char *msg);
 int		error_token(t_token token);
 
 //executor funcion
-void	ft_executor(t_command *cmd);
 int		ft_is_builtin(t_toolbox *tools);
 //  echo
 //void	ft_echo(t_sp_cmds *sp_cmds);

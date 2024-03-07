@@ -6,7 +6,7 @@
 /*   By: daparici <daparici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 16:03:10 by daparici          #+#    #+#             */
-/*   Updated: 2024/03/07 16:04:47 by daparici         ###   ########.fr       */
+/*   Updated: 2024/03/07 19:01:33 by daparici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ char	*heredoc_loop(t_command *cmd, char **env)
 {
 	char	*input;
 	char	*hdoc;
+	int		heredoc_pipe[2];
 	int		i;
 
 	i = 0;
@@ -51,5 +52,7 @@ char	*heredoc_loop(t_command *cmd, char **env)
 		i++;
 	}
 	input = split_words(hdoc, env);
+	ft_putstr_fd(input, heredoc_pipe[1]);
+	cmd->heredoc = heredoc_pipe[0];
 	return (input);
 }

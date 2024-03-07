@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: davidaparicio <davidaparicio@student.42    +#+  +:+       +#+        */
+/*   By: daparici <daparici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 16:56:27 by daparici          #+#    #+#             */
-/*   Updated: 2023/12/07 22:26:00 by davidaparic      ###   ########.fr       */
+/*   Updated: 2024/03/07 19:16:11 by daparici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,13 @@
 #include "tokens.h"
 
 
+//Here_doc
+char	*heredoc_loop(t_command *cmd, char **env);
+char	*heredoc(char *input, char *lim);
+
 //built-ins funcion
-int 	ft_executor(t_toolbox *tools);
+void	ft_executor_loop(t_command *cmd, t_toolbox *tools);
+void	ft_executor(t_toolbox *tools);
 //  echo
 int 	ft_echo(t_command *cmd);
 void	print_arguments(char **arg, int i);

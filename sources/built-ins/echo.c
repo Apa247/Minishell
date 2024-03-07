@@ -6,7 +6,7 @@
 /*   By: daparici <daparici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 19:17:51 by daparici          #+#    #+#             */
-/*   Updated: 2023/11/23 19:25:16 by daparici         ###   ########.fr       */
+/*   Updated: 2024/03/07 19:04:11 by daparici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	print_arguments(char **arg, int i)
 	}
 }
 
-int		ft_echo(t_command *cmd)
+int	ft_echo(t_command *cmd)
 {
 	int		flag;
 	size_t	i;
