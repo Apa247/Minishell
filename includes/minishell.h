@@ -6,7 +6,7 @@
 /*   By: davidaparicio <davidaparicio@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 15:07:55 by jverdu-r          #+#    #+#             */
-/*   Updated: 2024/03/18 22:19:50 by davidaparic      ###   ########.fr       */
+/*   Updated: 2024/03/18 22:53:08 by davidaparic      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,10 +66,16 @@ int		error_msg(char *msg);
 int		error_token(t_token token);
 
 //executor funcion
+void	ft_executor_loop(t_command *cmd, t_toolbox *tools);
+void	ft_executor(t_toolbox *tools);
+void	recursive_ex(int *pre_pipe, t_command *cmd, t_toolbox *tools);
 int		ft_is_builtin(t_command *cmd);
 void	ft_is_builtin_2(t_toolbox *tools, t_command *cmd);
 char	*find_paths(char **envp);
 char	*find_path(char *cmd, char **path);
 void	manage_params_child(t_toolbox *tools, t_command *cmd);
 void	heredoc_child(int *pre_p, int *ac_p, t_toolbox *tools, t_command *cmd);
+void	simple_command(t_toolbox *tools, t_command *cmd);
+int		ft_lstsize_m(t_command *list);
+char	**fill_args(t_command *cmd);
 #endif

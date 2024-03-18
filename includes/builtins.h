@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: daparici <daparici@student.42.fr>          +#+  +:+       +#+        */
+/*   By: davidaparicio <davidaparicio@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 16:56:27 by daparici          #+#    #+#             */
-/*   Updated: 2024/03/18 20:13:04 by daparici         ###   ########.fr       */
+/*   Updated: 2024/03/18 22:41:52 by davidaparic      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,6 @@ char	*heredoc_loop(t_command *cmd, char **env);
 char	*heredoc(char *input, char *lim);
 
 //built-ins funcion
-void	ft_executor_loop(t_command *cmd, t_toolbox *tools);
-void	ft_executor(t_toolbox *tools);
 //  echo
 int 	ft_echo(t_command *cmd);
 void	print_arguments(char **arg, int i, int out_fd);
