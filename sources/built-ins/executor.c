@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: davidaparicio <davidaparicio@student.42    +#+  +:+       +#+        */
+/*   By: daparici <daparici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 16:53:02 by daparici          #+#    #+#             */
-/*   Updated: 2024/03/18 00:13:46 by davidaparic      ###   ########.fr       */
+/*   Updated: 2024/03/18 18:53:43 by daparici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ char	**fill_args(t_command *cmd)
 	}
 	else
 		i++;
-	write(2, "--ss-----\n", 10);
 	n_args = malloc(sizeof(char *) * (i + 2));
 	n_args[0] = cmd->cmd;
 	i = 1;
@@ -127,7 +126,7 @@ void	manage_dups(t_command *cmd, int *pre_pipe, int *ac_pipe)
 }
 
 char	*find_paths(char **envp)
-{	
+{
 	while (*envp && ft_strncmp("PATH", *envp, 4))
 		envp++;
 	if (*envp)
@@ -142,6 +141,7 @@ void	recursive_ex(int *pre_pipe, t_command *cmd, t_toolbox *tools)
 	char	**cmd_arg;
 	char	*cmd_rute;
 	char	**path_rutes;
+	char	*path_rute;
 
 	pipe(ac_pipe);
 	cmd->pid = fork();
@@ -177,23 +177,16 @@ void	recursive_ex(int *pre_pipe, t_command *cmd, t_toolbox *tools)
 		else
 		{
 			cmd_arg = fill_args(cmd);
-			path_rutes = ft_split((char const*)tools->env, ':');		
+			path_rute = find_paths(tools->env);
+			path_rutes = ft_split((char const *)path_rute, ':');
 			cmd_rute = find_path(cmd->cmd, path_rutes);
-			int i = 0;
-			write(2, "--ss33-----\n", 12);
-			while (cmd_rute[i])
-			{
-				write(2, "--ss-----\n", 10);
-				write(2, &cmd_rute[i], 1);
-				i++;
-			}
 			if (!cmd_rute)
 				(perror("minishell:"), exit(1));
 			if (execve(cmd_rute, cmd_arg, tools->env) < 0)
 				(perror("minishell:"), exit(1));
 		}
 	}
-	else 
+	else
 	{
 		if (cmd->next)
 		{
