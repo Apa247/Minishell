@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: daparici <daparici@student.42.fr>          +#+  +:+       +#+        */
+/*   By: davidaparicio <davidaparicio@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 16:53:02 by daparici          #+#    #+#             */
-/*   Updated: 2024/03/07 19:39:33 by daparici         ###   ########.fr       */
+/*   Updated: 2024/03/18 00:13:46 by davidaparic      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,31 +31,26 @@ int	ft_lstsize_m(t_command *list)
 	return (len);
 }
 
-char	*pathfinder(char *cmd, char **envp)
+char	*find_path(char *cmd, char **path)
 {
-	char	**paths;
-	char	*path;
-	int		i;
+	char	*tmp;
 
-	i = 0;
-	while (ft_strnstr(envp[i], "PATH", 4) == 0)
-		i++;
-	paths = ft_split(envp[i] + 5, ':');
-	i = 0;
-	while (paths[i])
+	if (!access(cmd, X_OK))
+		return (cmd);
+	if (path)
 	{
-		path = ft_strjoin(paths[i], "/");
-		path = ft_strjoin(path, cmd);
-		if (access(path, F_OK) == 0)
-			return (path);
-		free(path);
-		i++;
+		while (*path)
+		{
+			tmp = ft_strjoin(*path, "/");
+			tmp = ft_strjoin(tmp, cmd);
+			if (!access(tmp, X_OK))
+				return (tmp);
+			free(tmp);
+			path++;
+		}
+		(perror(cmd), exit(1));
 	}
-	i = 0;
-	while (paths[i++])
-		free(paths[i]);
-	free(paths);
-	return (0);
+	return (NULL);
 }
 
 char	**fill_args(t_command *cmd)
@@ -63,20 +58,39 @@ char	**fill_args(t_command *cmd)
 	char		**n_args;
 	t_command	*aux;
 	int			i;
+	int			j;
 
+	j = 0;
 	aux = cmd;
 	i = 0;
-	while (aux->args[i])
+	if (aux->args)
+	{
+		while (aux->args[i])
+			i++;
+	}
+	else
 		i++;
+	write(2, "--ss-----\n", 10);
 	n_args = malloc(sizeof(char *) * (i + 2));
 	n_args[0] = cmd->cmd;
 	i = 1;
-	while (cmd->args[i - 1])
+	if (aux->args)
 	{
-		n_args[i] = cmd->args[i - 1];
-		i++;
+		while (cmd->args[j])
+		{
+			n_args[i] = cmd->args[j];
+			int k = 0;
+			while (n_args[i][k])
+			{
+				write(2, &n_args[i][k], 1);
+				write(2, "\n", 1);
+				k++;
+			}
+			i++;
+			j++;
+		}
 	}
-	n_args[i] = 0;
+	n_args[i] = NULL;
 	return (n_args);
 }
 
@@ -84,35 +98,50 @@ void	manage_dups(t_command *cmd, int *pre_pipe, int *ac_pipe)
 {
 	if (cmd->prev)
 	{
-		if (dup2(pre_pipe[0], 0))
+		write(2, "----1----\n", 10);
+		if (dup2(pre_pipe[0], 0) < 0)
 			(perror("minishell:"), exit(1));
 		close(pre_pipe[0]);
 	}
 	if (cmd->next)
 	{
-		if (dup2(ac_pipe[1], 1))
+		write(2, "----2----\n", 10);
+		if (dup2(ac_pipe[1], 1) < 0)
 			(perror("minishell:"), exit(1));
 		close(ac_pipe[1]);
 	}
 	if (cmd->in_fd > 2)
 	{
-		if (dup2(cmd->in_fd, 0))
+		write(2, "----3----\n", 10);
+		if (dup2(cmd->in_fd, 0) < 0)
 			(perror("minishell:"), exit(1));
 		close(cmd->in_fd);
 	}
 	if (cmd->out_fd > 2)
 	{
-		if (dup2(cmd->out_fd, 1))
+		write(2, "----4----\n", 10);
+		if (dup2(cmd->out_fd, 1) < 0)
 			(perror("minishell:"), exit(1));
 		close(cmd->out_fd);
 	}
+}
+
+char	*find_paths(char **envp)
+{	
+	while (*envp && ft_strncmp("PATH", *envp, 4))
+		envp++;
+	if (*envp)
+		return (*envp + 5);
+	else
+		return (NULL);
 }
 
 void	recursive_ex(int *pre_pipe, t_command *cmd, t_toolbox *tools)
 {
 	int		ac_pipe[2];
 	char	**cmd_arg;
-	char	*cmd_path;
+	char	*cmd_rute;
+	char	**path_rutes;
 
 	pipe(ac_pipe);
 	cmd->pid = fork();
@@ -120,6 +149,13 @@ void	recursive_ex(int *pre_pipe, t_command *cmd, t_toolbox *tools)
 		(perror("minishell:"), exit(1));
 	else if (cmd->pid == 0)
 	{
+		//write(2, "---------\n", 10);
+		int i = 0;
+		while (cmd->cmd[i])
+		{
+			write(2, &cmd->cmd[i], 1);
+			i++;
+		}
 		(close(pre_pipe[1]), close(ac_pipe[0]));
 		if (!cmd->prev)
 			close(pre_pipe[0]);
@@ -131,23 +167,33 @@ void	recursive_ex(int *pre_pipe, t_command *cmd, t_toolbox *tools)
 			heredoc_loop(cmd, tools->env);
 			if (cmd->heredoc && !cmd->args && cmd->in_fd <= 2)
 			{
-				if (dup2(cmd->heredoc, 0))
+				if (dup2(cmd->heredoc, 0) < 0)
 					(perror("minishell"), exit(1));
 				close(cmd->heredoc);
 			}
 		}
-		// if (ft_is_builtin(tools))
-		// 	exit(1);
-		cmd_arg = fill_args(cmd);
-		
-		//cmd_path = pathfinder(cmd->cmd, tools->env);
-		write(2, "hola\n", 5);
-		if (!cmd_path)
-			(perror("minishell:"), exit(1));
-		if (execve(cmd_path, cmd_arg, tools->env) < 0)
-			(perror("minishell:"), exit(1));
+		if (!ft_is_builtin(tools, cmd))
+			write(2, "--ss-----\n", 10);
+		else
+		{
+			cmd_arg = fill_args(cmd);
+			path_rutes = ft_split((char const*)tools->env, ':');		
+			cmd_rute = find_path(cmd->cmd, path_rutes);
+			int i = 0;
+			write(2, "--ss33-----\n", 12);
+			while (cmd_rute[i])
+			{
+				write(2, "--ss-----\n", 10);
+				write(2, &cmd_rute[i], 1);
+				i++;
+			}
+			if (!cmd_rute)
+				(perror("minishell:"), exit(1));
+			if (execve(cmd_rute, cmd_arg, tools->env) < 0)
+				(perror("minishell:"), exit(1));
+		}
 	}
-	else
+	else 
 	{
 		if (cmd->next)
 		{
@@ -163,32 +209,51 @@ void	ft_executor(t_toolbox *tools)
 	if (ft_lstsize_m(tools->cmd) > 1)
 		ft_executor_loop(tools->cmd, tools);
 	else
-		ft_is_builtin(tools);
+		ft_is_builtin(tools, tools->cmd);
 }
 
 void	ft_executor_loop(t_command *cmd, t_toolbox *tools)
 {
 	int			ac_pipe[2];
 	t_command	*cmd_aux;
+	t_command	*cmd_aux_2;
+	int			i;
+	int			status;
 
+	i = 0;
 	cmd_aux = cmd;
+	cmd_aux_2 = cmd_aux;
 	pipe(ac_pipe);
 	recursive_ex(ac_pipe, cmd_aux, tools);
+	close(ac_pipe[0]);
+	close(ac_pipe[1]);
+	usleep(500);
+	while (cmd_aux)
+	{
+		if (waitpid(cmd_aux->pid, &status, 0) == -1)
+			(perror("minishell:"), exit(1));
+		// ft_putnbr_fd(cmd_aux->pid, 1);
+		// ft_putchar_fd('\n', 1);
+		if (cmd_aux->next)
+			cmd_aux = cmd_aux->next;
+		else
+			break ;
+	}
 }
 
-int	ft_is_builtin(t_toolbox *tools)
+int	ft_is_builtin(t_toolbox *tools, t_command *cmd)
 {
-	if (ft_strcmp(tools->cmd->cmd, "pwd") == 0)
+	if (ft_strcmp(cmd->cmd, "pwd") == 0)
 		return (ft_pwd());
-	else if (ft_strcmp(tools->cmd->cmd, "echo") == 0)
+	else if (ft_strcmp(cmd->cmd, "echo") == 0)
 		return (ft_echo(tools->cmd));
-	else if (ft_strcmp(tools->cmd->cmd, "env") == 0)
+	else if (ft_strcmp(cmd->cmd, "env") == 0)
 		return (ft_env(tools->env));
-	else if (ft_strcmp(tools->cmd->cmd, "export") == 0)
+	else if (ft_strcmp(cmd->cmd, "export") == 0)
 		return (ft_export(tools));
-	else if (ft_strcmp(tools->cmd->cmd, "unset") == 0)
+	else if (ft_strcmp(cmd->cmd, "unset") == 0)
 		return (ft_unset(tools));
-	else if (ft_strcmp(tools->cmd->cmd, "cd") == 0)
+	else if (ft_strcmp(cmd->cmd, "cd") == 0)
 		return (ft_cd(tools));
 	else
 		return (EXIT_FAILURE);

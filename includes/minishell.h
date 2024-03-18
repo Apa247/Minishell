@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: daparici <daparici@student.42.fr>          +#+  +:+       +#+        */
+/*   By: davidaparicio <davidaparicio@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 15:07:55 by jverdu-r          #+#    #+#             */
-/*   Updated: 2024/03/07 18:53:51 by daparici         ###   ########.fr       */
+/*   Updated: 2024/03/17 08:02:25 by davidaparic      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,9 @@ int		error_msg(char *msg);
 int		error_token(t_token token);
 
 //executor funcion
-int		ft_is_builtin(t_toolbox *tools);
+int		ft_is_builtin(t_toolbox *tools, t_command *cmd);
+char	*find_paths(char **envp);
+char	*find_path(char *cmd, char **path);
 //  echo
 //void	ft_echo(t_sp_cmds *sp_cmds);
 void	print_arguments(char **arg, int i);
