@@ -6,7 +6,7 @@
 /*   By: daparici <daparici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 16:53:02 by daparici          #+#    #+#             */
-/*   Updated: 2024/03/18 20:24:42 by daparici         ###   ########.fr       */
+/*   Updated: 2024/03/18 21:03:20 by daparici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,6 +142,7 @@ void	recursive_ex(int *pre_pipe, t_command *cmd, t_toolbox *tools)
 		(perror("minishell:"), exit(1));
 	else if (cmd->pid == 0)
 	{
+		signal()
 		(close(pre_pipe[1]), close(ac_pipe[0]));
 		if (!cmd->prev)
 			close(pre_pipe[0]);
@@ -183,6 +184,8 @@ void	recursive_ex(int *pre_pipe, t_command *cmd, t_toolbox *tools)
 			close(pre_pipe[0]);
 			close(pre_pipe[1]);
 			recursive_ex(ac_pipe, cmd->next, tools);
+			close(ac_pipe[0]);
+			close(ac_pipe[1]);
 		}
 	}
 }
