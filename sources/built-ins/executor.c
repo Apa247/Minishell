@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: daparici <daparici@student.42.fr>          +#+  +:+       +#+        */
+/*   By: davidaparicio <davidaparicio@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 16:53:02 by daparici          #+#    #+#             */
-/*   Updated: 2024/03/18 21:03:20 by daparici         ###   ########.fr       */
+/*   Updated: 2024/03/18 22:15:33 by davidaparic      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,24 +64,16 @@ char	**fill_args(t_command *cmd)
 	aux = cmd;
 	i = 0;
 	if (aux->args)
-	{
 		while (aux->args[i])
 			i++;
-	}
 	else
 		i++;
 	n_args = malloc(sizeof(char *) * (i + 2));
 	n_args[0] = cmd->cmd;
 	i = 1;
 	if (aux->args)
-	{
 		while (cmd->args[j])
-		{
-			n_args[i] = cmd->args[j];
-			i++;
-			j++;
-		}
-	}
+			n_args[i++] = cmd->args[j++];
 	n_args[i] = NULL;
 	return (n_args);
 }
@@ -90,28 +82,24 @@ void	manage_dups(t_command *cmd, int *pre_pipe, int *ac_pipe)
 {
 	if (cmd->prev)
 	{
-		write(2, "----1----\n", 10);
 		if (dup2(pre_pipe[0], 0) < 0)
 			(perror("minishell:"), exit(1));
 		close(pre_pipe[0]);
 	}
 	if (cmd->next)
 	{
-		write(2, "----2----\n", 10);
 		if (dup2(ac_pipe[1], 1) < 0)
 			(perror("minishell:"), exit(1));
 		close(ac_pipe[1]);
 	}
 	if (cmd->in_fd > 2)
 	{
-		write(2, "----3----\n", 10);
 		if (dup2(cmd->in_fd, 0) < 0)
 			(perror("minishell:"), exit(1));
 		close(cmd->in_fd);
 	}
 	if (cmd->out_fd > 2)
 	{
-		write(2, "----4----\n", 10);
 		if (dup2(cmd->out_fd, 1) < 0)
 			(perror("minishell:"), exit(1));
 		close(cmd->out_fd);
@@ -128,13 +116,52 @@ char	*find_paths(char **envp)
 		return (NULL);
 }
 
-void	recursive_ex(int *pre_pipe, t_command *cmd, t_toolbox *tools)
+void manage_params_child(t_toolbox *tools, t_command *cmd)
 {
-	int		ac_pipe[2];
 	char	**cmd_arg;
 	char	*cmd_rute;
 	char	**path_rutes;
 	char	*path_rute;
+
+	cmd_arg = fill_args(cmd);
+	if (!cmd_arg)
+		(perror("minishell:"), exit(1));
+	path_rute = find_paths(tools->env);
+	if (!path_rute)
+		(perror("minishell:"), exit(1));
+	path_rutes = ft_split((char const *)path_rute, ':');
+	if (!path_rutes)
+		(perror("minishell:"), exit(1));
+	cmd_rute = find_path(cmd->cmd, path_rutes);
+	if (!cmd_rute)
+		(perror("minishell:"), exit(1));
+	if (execve(cmd_rute, cmd_arg, tools->env) < 0)
+		(perror("minishell:"), exit(1));
+}
+
+void	m_hdoc_child(int *pre_p, int *ac_p, t_toolbox *tools, t_command *cmd)
+{
+	(close(pre_p[1]), close(ac_p[0]));
+	if (!cmd->prev)
+		close(pre_p[0]);
+	if (!cmd->next)
+		close(ac_p[1]);
+	manage_dups(cmd, pre_p, ac_p);
+	if (cmd->heredoc)
+	{
+		heredoc_loop(cmd, tools->env);
+		if (cmd->heredoc && !cmd->args && cmd->in_fd <= 2)
+		{
+			if (dup2(cmd->heredoc, 0) < 0)
+				(perror("minishell"), exit(1));
+			close(cmd->heredoc);
+		}
+	}
+}
+
+void	recursive_ex(int *pre_pipe, t_command *cmd, t_toolbox *tools)
+{
+	int		ac_pipe[2];
 
 	pipe(ac_pipe);
 	cmd->pid = fork();
@@ -142,50 +169,19 @@ void	recursive_ex(int *pre_pipe, t_command *cmd, t_toolbox *tools)
 		(perror("minishell:"), exit(1));
 	else if (cmd->pid == 0)
 	{
-		signal()
-		(close(pre_pipe[1]), close(ac_pipe[0]));
-		if (!cmd->prev)
-			close(pre_pipe[0]);
-		if (!cmd->next)
-			close(ac_pipe[1]);
-		manage_dups(cmd, pre_pipe, ac_pipe);
-		if (cmd->heredoc)
-		{
-			heredoc_loop(cmd, tools->env);
-			if (cmd->heredoc && !cmd->args && cmd->in_fd <= 2)
-			{
-				if (dup2(cmd->heredoc, 0) < 0)
-					(perror("minishell"), exit(1));
-				close(cmd->heredoc);
-			}
-		}
+		m_hdoc_child(pre_pipe, ac_pipe, tools, cmd);
 		if (ft_is_builtin(cmd) == 0)
-		{
-			ft_is_builtin_2(tools, cmd);
-			write(2, "----s----\n", 10);
-			exit(0);
-		}
+			(ft_is_builtin_2(tools, cmd), exit(0));
 		else
-		{
-			cmd_arg = fill_args(cmd);
-			path_rute = find_paths(tools->env);
-			path_rutes = ft_split((char const *)path_rute, ':');
-			cmd_rute = find_path(cmd->cmd, path_rutes);
-			if (!cmd_rute)
-				(perror("minishell:"), exit(1));
-			if (execve(cmd_rute, cmd_arg, tools->env) < 0)
-				(perror("minishell:"), exit(1));
-		}
+			manage_params_child(tools, cmd);
 	}
 	else
 	{
 		if (cmd->next)
 		{
-			close(pre_pipe[0]);
-			close(pre_pipe[1]);
+			(close(pre_pipe[0]), close(pre_pipe[1]));
 			recursive_ex(ac_pipe, cmd->next, tools);
-			close(ac_pipe[0]);
-			close(ac_pipe[1]);
+			(close(ac_pipe[0]), close(ac_pipe[1]));
 		}
 	}
 }
