@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_redirs.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: daparici <daparici@student.42.fr>          +#+  +:+       +#+        */
+/*   By: davidaparicio <davidaparicio@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 19:22:42 by jverdu-r          #+#    #+#             */
-/*   Updated: 2024/02/08 18:46:42 by daparici         ###   ########.fr       */
+/*   Updated: 2024/03/19 00:04:47 by davidaparic      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,10 @@ int	check_in_fd(t_redir *redir)
 			else
 				error_msg("Access error\n");
 		}
-		in_files = in_files->next;
+		if (in_files->next)
+			in_files = in_files->next;
+		else
+			break ;
 	}
 	return (open(in_files->file, O_RDONLY));
 }
