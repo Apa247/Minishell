@@ -6,7 +6,7 @@
 /*   By: davidaparicio <davidaparicio@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 16:53:02 by daparici          #+#    #+#             */
-/*   Updated: 2024/03/18 22:47:58 by davidaparic      ###   ########.fr       */
+/*   Updated: 2024/03/18 23:03:01 by davidaparic      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,23 +27,14 @@ void	ft_executor(t_toolbox *tools)
 
 void	simple_command(t_toolbox *tools, t_command *cmd)
 {
+	int	status;
+	
 	cmd->pid = fork();
 	if (cmd->pid < 0)
 		(perror("minishell:"), exit(1));
 	else if (cmd->pid == 0)
 	{
-		if (cmd->in_fd > 2)
-		{
-			if (dup2(cmd->in_fd, 0) < 0)
-				(perror("minishell:"), exit(1));
-			close(cmd->in_fd);
-		}
-		if (cmd->out_fd > 2)
-		{
-			if (dup2(cmd->out_fd, 1) < 0)
-				(perror("minishell:"), exit(1));
-			close(cmd->out_fd);
-		}
+		manage_dups(cmd, NULL, NULL);
 		if (cmd->heredoc)
 		{
 			heredoc_loop(cmd, tools->env);
@@ -55,7 +46,10 @@ void	simple_command(t_toolbox *tools, t_command *cmd)
 			}
 		}
 		manage_params_child(tools, cmd);
-	}	
+	}
+	else
+		if (waitpid(cmd->pid, &status, 0) == -1)
+			(perror("minishell:"), exit(1));
 }
 
 int	ft_is_builtin(t_command *cmd)

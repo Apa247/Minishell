@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: daparici <daparici@student.42.fr>          +#+  +:+       +#+        */
+/*   By: davidaparicio <davidaparicio@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 19:17:51 by daparici          #+#    #+#             */
-/*   Updated: 2024/03/18 20:12:39 by daparici         ###   ########.fr       */
+/*   Updated: 2024/03/18 23:00:54 by davidaparic      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	ft_echo(t_command *cmd)
 		if (cmd->args[i])
 			print_arguments(cmd->args, i, cmd->out_fd);
 		if (flag == 0)
-			ft_putchar_fd('\n', STDOUT_FILENO);
+			ft_putchar_fd('\n', cmd->out_fd);
 	}
 	return (EXIT_SUCCESS);
 }
