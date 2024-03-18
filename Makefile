@@ -6,7 +6,7 @@
 #    By: davidaparicio <davidaparicio@student.42    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/24 15:20:41 by jverdu-r          #+#    #+#              #
-#    Updated: 2024/03/18 21:36:49 by davidaparic      ###   ########.fr        #
+#    Updated: 2024/03/18 22:31:50 by davidaparic      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,7 +46,9 @@ SRCS	=	sources/main.c \
 			sources/expander/expander_utils_two.c \
 			sources/expander/lim_trimmer.c \
 			sources/built-ins/echo.c \
-			sources/built-ins/executor.c \
+			sources/executor/executor.c \
+			sources/executor/executor_2.c \
+			sources/executor/executor_utils.c \
 			sources/built-ins/pwd.c \
 			sources/built-ins/env.c \
 			sources/built-ins/export.c \

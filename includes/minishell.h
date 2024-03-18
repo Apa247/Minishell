@@ -6,7 +6,7 @@
 /*   By: davidaparicio <davidaparicio@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 15:07:55 by jverdu-r          #+#    #+#             */
-/*   Updated: 2024/03/18 21:59:31 by davidaparic      ###   ########.fr       */
+/*   Updated: 2024/03/18 22:19:50 by davidaparic      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,4 +71,5 @@ void	ft_is_builtin_2(t_toolbox *tools, t_command *cmd);
 char	*find_paths(char **envp);
 char	*find_path(char *cmd, char **path);
 void	manage_params_child(t_toolbox *tools, t_command *cmd);
+void	heredoc_child(int *pre_p, int *ac_p, t_toolbox *tools, t_command *cmd);
 #endif
