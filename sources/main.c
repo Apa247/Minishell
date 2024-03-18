@@ -6,10 +6,10 @@
 /*   By: daparici <daparici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 10:28:15 by jverdu-r          #+#    #+#             */
-/*   Updated: 2023/08/04 17:29:43 by jverdu-r         ###   ########.fr       */
-/*   Updated: 2023/06/19 19:28:44 by daparici         ###   ########.fr       */
+/*   Updated: 2024/03/18 19:45:58 by daparici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "../includes/minishell.h"
 
@@ -22,7 +22,7 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_toolbox	tools;
 
-	atexit(leaks);
+	//atexit(leaks);
 	if (argc != 1 || argv[1])
 	{
 		printf("Minishell must be executed wihtout arguments");

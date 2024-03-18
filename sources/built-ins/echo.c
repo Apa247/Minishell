@@ -3,22 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: davidaparicio <davidaparicio@student.42    +#+  +:+       +#+        */
+/*   By: daparici <daparici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 19:17:51 by daparici          #+#    #+#             */
-/*   Updated: 2024/03/17 04:59:51 by davidaparic      ###   ########.fr       */
+/*   Updated: 2024/03/18 20:12:39 by daparici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	print_arguments(char **arg, int i)
+void	print_arguments(char **arg, int i, int out_fd)
 {
 	while (arg[i])
 	{
-		ft_putstr_fd(arg[i], STDOUT_FILENO);
+		ft_putstr_fd(arg[i], out_fd);
 		if (arg[i + 1])
-			ft_putchar_fd(' ', STDOUT_FILENO);
+			ft_putchar_fd(' ', out_fd);
 		i++;
 	}
 }
@@ -44,7 +44,7 @@ int	ft_echo(t_command *cmd)
 			i++;
 		}
 		if (cmd->args[i])
-			print_arguments(cmd->args, i);
+			print_arguments(cmd->args, i, cmd->out_fd);
 		if (flag == 0)
 			ft_putchar_fd('\n', STDOUT_FILENO);
 	}
