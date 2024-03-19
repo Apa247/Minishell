@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: davidaparicio <davidaparicio@student.42    +#+  +:+       +#+        */
+/*   By: daparici <daparici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 16:53:02 by daparici          #+#    #+#             */
-/*   Updated: 2024/03/18 23:03:01 by davidaparic      ###   ########.fr       */
+/*   Updated: 2024/03/19 18:28:17 by daparici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	ft_executor(t_toolbox *tools)
 void	simple_command(t_toolbox *tools, t_command *cmd)
 {
 	int	status;
-	
+
 	cmd->pid = fork();
 	if (cmd->pid < 0)
 		(perror("minishell:"), exit(1));

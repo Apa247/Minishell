@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   executer_2.c                                       :+:      :+:    :+:   */
+/*   executor_2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: davidaparicio <davidaparicio@student.42    +#+  +:+       +#+        */
+/*   By: daparici <daparici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 22:23:21 by davidaparic       #+#    #+#             */
-/*   Updated: 2024/03/18 22:34:59 by davidaparic      ###   ########.fr       */
+/*   Updated: 2024/03/19 18:28:32 by daparici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ void	manage_dups(t_command *cmd, int *pre_pipe, int *ac_pipe)
 	}
 }
 
-void manage_params_child(t_toolbox *tools, t_command *cmd)
+void	manage_params_child(t_toolbox *tools, t_command *cmd)
 {
 	char	**cmd_arg;
 	char	*cmd_rute;
