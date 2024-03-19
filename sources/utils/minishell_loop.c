@@ -6,7 +6,7 @@
 /*   By: daparici <daparici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 12:14:37 by jverdu-r          #+#    #+#             */
-/*   Updated: 2024/03/07 19:14:01 by daparici         ###   ########.fr       */
+/*   Updated: 2024/03/19 19:25:14 by daparici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,8 @@ int	minishell_loop(t_toolbox *tools)
 					tools->cmd = parser(tools);
 					expander(tools);
 					get_fds(tools->cmd);
-					ft_executor(tools);
 					//cmd_show(tools->cmd);
+					ft_executor(tools);
 				}
 			}
 			tools_reload(tools);

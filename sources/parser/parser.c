@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser_in_progress_2.c                             :+:      :+:    :+:   */
+/*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jverdu-r <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: daparici <daparici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 18:38:55 by jverdu-r          #+#    #+#             */
-/*   Updated: 2023/11/03 17:03:53 by jverdu-r         ###   ########.fr       */
+/*   Updated: 2024/03/19 18:35:53 by daparici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,9 @@ t_lexer	*redir_add(t_command *cmd, t_lexer *list)
 		redir_addback(&cmd->out_files, redir_new(list->next->str));
 	if (list->token == LESS_LESS)
 	{
-		printf("adding heredoc\n");
 		cmd->limiter = lim_add(cmd->limiter, \
 			cmd->heredoc, list->next->str);
 		cmd->heredoc++;
-		printf("heredoc added\n");
 	}
 	if (list->token == GREAT_GREAT)
 		cmd->append = ft_strdup(list->next->str);

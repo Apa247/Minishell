@@ -6,7 +6,7 @@
 #    By: daparici <daparici@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/24 15:20:41 by jverdu-r          #+#    #+#              #
-#    Updated: 2024/03/19 18:17:38 by daparici         ###   ########.fr        #
+#    Updated: 2024/03/19 19:22:26 by daparici         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,6 +23,9 @@ INCLUDE	=	includes -I $(READ)/include
 CFLAGS	=	-Wall -Werror -Wextra -g3 -I$(INCLUDE)
 
 RM		=	rm -f
+
+GNL = get_next_line.c get_next_line_utils.c
+GNLPATH = $(addprefix ./includes/GetNextLine/,$(GNL))
 
 SRCS	=	sources/main.c \
 			sources/utils/signals.c \
@@ -59,6 +62,7 @@ SRCS	=	sources/main.c \
 			
 
 OBJS	=	$(SRCS:%.c=%.o)
+GNLOBJ 	= 	$(GNLPATH:.c=.o)
 
 READ	=  	/System/Volumes/Data/Users/${USER}/.brew/Cellar/readline/8.2.1
 #READ	=  	/System/Volumes/Data/Users/jverdu-r/.brew/Cellar/readline/8.2.1
@@ -66,8 +70,8 @@ READ	=  	/System/Volumes/Data/Users/${USER}/.brew/Cellar/readline/8.2.1
 
 all:		$(NAME)
 
-$(NAME):	$(OBJS) $(LIBFT_A)
-			@$(CC) $(CFLAGS) $(OBJS) -L$(LIBFT) -lft  -lreadline -L $(READ)/lib -o $(NAME)
+$(NAME):	$(OBJS) $(GNLOBJ) $(LIBFT_A)
+			@$(CC) $(CFLAGS) $(OBJS) $(GNLOBJ) -L$(LIBFT) -lft  -lreadline -L $(READ)/lib -o $(NAME)
 			@echo "Linked into excutable \033[0;32mminishell\033[0m."
 
 $(LIBFT_A):	

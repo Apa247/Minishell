@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jverdu-r <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: daparici <daparici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 17:59:56 by jverdu-r          #+#    #+#             */
-/*   Updated: 2023/10/24 17:59:58 by jverdu-r         ###   ########.fr       */
+/*   Updated: 2024/03/19 20:31:47 by daparici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,4 +27,6 @@ char	*get_res(char **words, char **env);
 char	*get_trim(char **words);
 char	**get_words(char **words);
 char	**exp_words(char **words, char **env);
+char	*expnd(char *str, char **env);
+char	*check_str(char *str, char **env, int i);
 #endif

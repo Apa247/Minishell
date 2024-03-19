@@ -3,42 +3,44 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: davidaparicio <davidaparicio@student.42    +#+  +:+       +#+        */
+/*   By: daparici <daparici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 15:07:55 by jverdu-r          #+#    #+#             */
-/*   Updated: 2024/03/18 23:02:46 by davidaparic      ###   ########.fr       */
+/*   Updated: 2024/03/19 19:34:11 by daparici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #ifndef MINISHELL_H
-#define MINISHELL_H
+# define MINISHELL_H
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <fcntl.h>
-#include <signal.h>
-#include <limits.h>
-#include <readline/readline.h>
-#include <readline/history.h>
-#include <errno.h>
-#include "libft/libft.h"
-#include "tokens.h"
-#include "structs.h"
-#include "lexer.h"
-#include "parser.h"
-#include "expander.h"
-#include "builtins.h"
-
+# include <stdio.h>
+# include <stdlib.h>
+# include <unistd.h>
+# include <fcntl.h>
+# include <signal.h>
+# include <limits.h>
+# include <readline/readline.h>
+# include <readline/history.h>
+# include <errno.h>
+# include "libft/libft.h"
+# include "tokens.h"
+# include "structs.h"
+# include "lexer.h"
+# include "parser.h"
+# include "expander.h"
+# include "builtins.h"
+# include "GetNextLine/get_next_line.h"
 
 //test
-t_command   *cmd_extract(t_lexer *list);
-int 		check_syntax(t_lexer *tk_list);
+t_command	*cmd_extract(t_lexer *list);
+int			check_syntax(t_lexer *tk_list);
 
 
 //signal functions
 void	signals_workout(void);
+void    child_signals(void);
+void    father_workout(void);
 
 //loop functions
 int		minishell_loop(t_toolbox *tools);

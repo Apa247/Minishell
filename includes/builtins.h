@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: davidaparicio <davidaparicio@student.42    +#+  +:+       +#+        */
+/*   By: daparici <daparici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 16:56:27 by daparici          #+#    #+#             */
-/*   Updated: 2024/03/18 22:41:52 by davidaparic      ###   ########.fr       */
+/*   Updated: 2024/03/19 19:46:18 by daparici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@
 //Here_doc
 char	*heredoc_loop(t_command *cmd, char **env);
 char	*heredoc(char *input, char *lim);
+void	check_here_doc(t_command *cmd, char **env);
+void	heredoc_child(int *pre_p, int *ac_p, t_toolbox *tools, t_command *cmd);
 
 //built-ins funcion
 //  echo

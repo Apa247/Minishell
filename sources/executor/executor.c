@@ -6,7 +6,7 @@
 /*   By: daparici <daparici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 16:53:02 by daparici          #+#    #+#             */
-/*   Updated: 2024/03/19 18:28:17 by daparici         ###   ########.fr       */
+/*   Updated: 2024/03/19 19:46:05 by daparici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,11 @@ void	simple_command(t_toolbox *tools, t_command *cmd)
 		(perror("minishell:"), exit(1));
 	else if (cmd->pid == 0)
 	{
+		child_signals();
 		manage_dups(cmd, NULL, NULL);
 		if (cmd->heredoc)
 		{
-			heredoc_loop(cmd, tools->env);
+			check_here_doc(cmd, tools->env);
 			if (cmd->heredoc && !cmd->args && cmd->in_fd <= 2)
 			{
 				if (dup2(cmd->heredoc, 0) < 0)
@@ -48,8 +49,11 @@ void	simple_command(t_toolbox *tools, t_command *cmd)
 		manage_params_child(tools, cmd);
 	}
 	else
+	{
+		father_workout();
 		if (waitpid(cmd->pid, &status, 0) == -1)
 			(perror("minishell:"), exit(1));
+	}
 }
 
 int	ft_is_builtin(t_command *cmd)

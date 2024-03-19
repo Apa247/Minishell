@@ -6,7 +6,7 @@
 /*   By: daparici <daparici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 14:52:14 by jverdu-r          #+#    #+#             */
-/*   Updated: 2024/03/18 21:05:34 by daparici         ###   ########.fr       */
+/*   Updated: 2024/03/19 19:33:42 by daparici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,49 @@
 
 static void	signal_int(int code)
 {
-	(void)code;
-	printf("minishell>");
-	printf("\n");
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
+    (void)code;
+    printf("\n");
+    rl_on_new_line();
+    rl_replace_line("", 0);
+    rl_redisplay();
 }
 
-void	signals_workout(void)
+static void signal_father(int code)
 {
-	signal(SIGQUIT, SIG_IGN);
-	signal(SIGINT, signal_int);
+    (void)code;
+    if (code == SIGINT)
+        printf("\n");
+    else
+        printf("Quit: 3\n");
+    rl_on_new_line();
+    rl_replace_line("", 0);
+    rl_redisplay();
+}
+
+void    father_workout(void)
+{
+    signal(SIGQUIT, signal_father);
+    signal(SIGTTIN, SIG_IGN);
+    signal(SIGTTOU, SIG_IGN);
+    signal(SIGTSTP, SIG_IGN);
+    signal(SIGINT, signal_father);
+}
+
+void    signals_workout(void)
+{
+    signal(SIGQUIT, SIG_IGN);
+    signal(SIGTTIN, SIG_IGN);
+    signal(SIGTTOU, SIG_IGN);
+    signal(SIGTSTP, SIG_IGN);
+    signal(SIGINT, signal_int);
+}
+
+void    child_signals(void)
+{
+    signal(SIGQUIT, SIG_DFL);
+    signal(SIGTTIN, SIG_DFL);
+    signal(SIGTTOU, SIG_DFL);
+    signal(SIGTSTP, SIG_DFL);
+    signal(SIGCHLD, SIG_DFL);
+    signal(SIGINT, signal_int);
 }

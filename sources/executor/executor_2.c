@@ -6,7 +6,7 @@
 /*   By: daparici <daparici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 22:23:21 by davidaparic       #+#    #+#             */
-/*   Updated: 2024/03/19 18:28:32 by daparici         ###   ########.fr       */
+/*   Updated: 2024/03/19 19:46:36 by daparici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	ft_executor_loop(t_command *cmd, t_toolbox *tools)
 	recursive_ex(ac_pipe, cmd_aux, tools);
 	close(ac_pipe[0]);
 	close(ac_pipe[1]);
+	father_workout();
 	while (cmd_aux)
 	{
 		if (waitpid(cmd_aux->pid, &status, 0) == -1)
@@ -46,6 +47,7 @@ void	recursive_ex(int *pre_pipe, t_command *cmd, t_toolbox *tools)
 		(perror("minishell:"), exit(1));
 	else if (cmd->pid == 0)
 	{
+		child_signals();
 		heredoc_child(pre_pipe, ac_pipe, tools, cmd);
 		if (ft_is_builtin(cmd) == 0)
 			(ft_is_builtin_2(tools, cmd), exit(0));
@@ -124,7 +126,7 @@ void	heredoc_child(int *pre_p, int *ac_p, t_toolbox *tools, t_command *cmd)
 	manage_dups(cmd, pre_p, ac_p);
 	if (cmd->heredoc)
 	{
-		heredoc_loop(cmd, tools->env);
+		check_here_doc(cmd, tools->env);
 		if (cmd->heredoc && !cmd->args && cmd->in_fd <= 2)
 		{
 			if (dup2(cmd->heredoc, 0) < 0)

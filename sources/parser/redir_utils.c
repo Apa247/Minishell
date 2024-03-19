@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jverdu-r <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: daparici <daparici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 09:43:17 by jverdu-r          #+#    #+#             */
-/*   Updated: 2023/11/27 19:01:45 by jverdu-r         ###   ########.fr       */
+/*   Updated: 2024/03/19 18:36:01 by daparici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ char	**lim_add(char **limts, int lim, char *str)
 		}
 		free(limts);
 	}
-	printf("out of lim loop\n");
 	nlimts[i] = ft_strdup(str);
 	nlimts[i + 1] = 0;
 	return (nlimts);
