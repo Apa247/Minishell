@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jverdu-r <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: davidaparicio <davidaparicio@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 14:14:30 by jverdu-r          #+#    #+#             */
-/*   Updated: 2022/02/24 18:45:39 by jverdu-r         ###   ########.fr       */
+/*   Updated: 2024/03/19 22:37:57 by davidaparic      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,5 +37,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		b++;
 	}
 	ptr[a] = 0;
+	free(s1);
+	free(s2);
 	return (ptr);
 }

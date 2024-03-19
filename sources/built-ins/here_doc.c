@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: daparici <daparici@student.42.fr>          +#+  +:+       +#+        */
+/*   By: davidaparicio <davidaparicio@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 16:03:10 by daparici          #+#    #+#             */
-/*   Updated: 2024/03/19 20:49:59 by daparici         ###   ########.fr       */
+/*   Updated: 2024/03/20 00:15:55 by davidaparic      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	check_here_doc(t_command *cmd, char **env)
 {
 	int		pipe1[2];
 	char	*line;
-	//char	*aux;
+	char	*aux;
 	int		i;
 
 	(void)env;
@@ -29,10 +29,10 @@ void	check_here_doc(t_command *cmd, char **env)
 		while (ft_strlen(cmd->limiter[i]) != (ft_strlen(line) - 1)
 			|| ft_strncmp(line, cmd->limiter[i], ft_strlen(cmd->limiter[i])))
 		{
-			//aux = check_str(line, env, 1);
+			aux = expander_hdoc(line, env);
 			ft_putchar_fd('>', 2);
-			ft_putstr_fd(line, pipe1[1]);
-			free(line);
+			ft_putstr_fd(aux, pipe1[1]);
+			free(aux);
 			line = get_next_line(0);
 		}
 		free(line);
@@ -42,50 +42,65 @@ void	check_here_doc(t_command *cmd, char **env)
 	cmd->heredoc = pipe1[0];
 }
 
-char	*heredoc_loop(t_command *cmd, char **env)
+char	*expander_hdoc(char *str, char **env)
 {
-	char	*input;
-	char	*hdoc;
-	int		heredoc_pipe[2];
-	int		i;
+	unsigned int 	i;
+	char			*variable;
+	char			*expand_str;
+	char			*copy_ex_str;
 
 	i = 0;
-	pipe(heredoc_pipe);
-	while (cmd->limiter[i])
+	expand_str = ft_strdup("");
+	while (str[i])
 	{
-		ft_putnbr_fd(cmd->heredoc, 2);
-		ft_putchar_fd('\n', 2);
-		if (i > 0)
-			free(hdoc);
-		input = readline(">");
-		hdoc = heredoc(input, cmd->limiter[i]);
-		i++;
+		if (str[i] == '$' && str[i + 1] != ' ' && str[i + 1] != '\t' 
+			&& str[i + 1] != '\n' &&  str[i + 1])
+		{
+			variable = find_variable(str, i + 1);
+			copy_ex_str = expand_str;
+			expand_str = ft_strjoin(copy_ex_str, check_env(variable, env));
+			i++;
+			while (str[i] && ((str[i] >= 'a' && str[i] <= 'z')
+				|| (str[i] >= 'A' && str[i] <= 'Z')
+				|| (str[i] >= '0' && str[i] <= '9'))) 
+				i++;
+		}
+		else
+		{
+			copy_ex_str = expand_str;
+			expand_str = ft_strjoin(copy_ex_str, ft_substr(str, i, 1));
+			i++;
+		}
 	}
-	input = split_words(hdoc, env);
-	ft_putstr_fd(input, heredoc_pipe[1]);
-	cmd->heredoc = heredoc_pipe[0];
-	return (input);
+	free(str);
+	return (expand_str);
 }
 
-char	*heredoc(char *input, char *lim)
+char	*find_variable(char *str, unsigned int i)
 {
-	char	*aux;
-	char	*pipe;
+	unsigned int		j;
+	char				*aux;
 
-	if (ft_strncmp(input, lim, ft_strlen(lim)))
-		return (NULL);
-	while (42)
+	j = i;
+	while (str[i] && ((str[i] >= 'a' && str[i] <= 'z')
+		|| (str[i] >= 'A' && str[i] <= 'Z')
+		|| (str[i] >= '0' && str[i] <= '9'))) 
+		i++;
+	aux = ft_substr(str, j, (i - j));
+	return (aux);
+}
+
+char	*check_env(char *str, char **env)
+{
+	int	i;
+
+	i = 0;
+	while (env[i])
 	{
-		aux = readline(">");
-		if (ft_strncmp(aux, lim, ft_strlen(lim)))
-		{
-			free(aux);
-			break ;
-		}
-		pipe = ft_strjoin(input, "\n");
-		input = ft_strjoin(pipe, aux);
-		free(pipe);
-		free(aux);
+		if (ft_strncmp(env[i], str, lenght_to_equal(env[i])) == 0)
+			return(ft_substr(env[i], lenght_to_equal(env[i]) + 1,
+				ft_strlen(env[i]) - lenght_to_equal(env[i]) + 1));
+		i++;
 	}
-	return (input);
+	return(ft_strdup(""));
 }
