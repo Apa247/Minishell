@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: davidaparicio <davidaparicio@student.42    +#+  +:+       +#+        */
+/*   By: daparici <daparici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 22:23:21 by davidaparic       #+#    #+#             */
-/*   Updated: 2024/03/20 13:32:11 by davidaparic      ###   ########.fr       */
+/*   Updated: 2024/03/20 19:40:33 by daparici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	recursive_ex(int *pre_pipe, t_command *cmd, t_toolbox *tools)
 	else if (cmd->pid == 0)
 	{
 		child_signals();
-		heredoc_child(pre_pipe, ac_pipe, tools, cmd);
+		heredoc_child(pre_pipe, ac_pipe, cmd);
 		if (ft_is_builtin(cmd) == 0)
 			(ft_is_builtin_2(tools, cmd), exit(0));
 		else
@@ -116,7 +116,7 @@ void	manage_params_child(t_toolbox *tools, t_command *cmd)
 		(perror("minishell:"), exit(1));
 }
 
-void	heredoc_child(int *pre_p, int *ac_p, t_toolbox *tools, t_command *cmd)
+void	heredoc_child(int *pre_p, int *ac_p, t_command *cmd)
 {
 	(close(pre_p[1]), close(ac_p[0]));
 	if (!cmd->prev)
@@ -124,15 +124,12 @@ void	heredoc_child(int *pre_p, int *ac_p, t_toolbox *tools, t_command *cmd)
 	if (!cmd->next)
 		close(ac_p[1]);
 	manage_dups(cmd, pre_p, ac_p);
-	if (cmd->heredoc)
+	if (cmd->heredoc && !cmd->args && cmd->in_fd <= 2)
 	{
-		check_here_doc(cmd, tools->env);
-		if (cmd->heredoc && !cmd->args && cmd->in_fd <= 2)
-		{
-			if (dup2(cmd->heredoc, 0) < 0)
-				(perror("minishell"), exit(1));
-			close(cmd->heredoc);
-		}
+		if (dup2(cmd->heredoc, 0) < 0)
+			(perror("minishell"), exit(1));
+		close(cmd->heredoc);
 	}
 }
+
 

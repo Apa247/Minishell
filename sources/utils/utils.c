@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jverdu-r <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: daparici <daparici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 12:58:17 by jverdu-r          #+#    #+#             */
-/*   Updated: 2023/09/20 10:19:03 by jverdu-r         ###   ########.fr       */
+/*   Updated: 2024/03/20 19:08:36 by daparici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,8 @@ int	check_input(t_toolbox *tools)
 	input = readline("minishell>");
 	if (input)
 	{
+		if (ft_strcmp("exit", input) == 0)
+			exit(0);
 		if (input[ft_strlen(input) - 1] == '|')
 		{
 			aux = fully_prompt(input, '|');

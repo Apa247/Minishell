@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: davidaparicio <davidaparicio@student.42    +#+  +:+       +#+        */
+/*   By: daparici <daparici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 22:21:02 by davidaparic       #+#    #+#             */
-/*   Updated: 2024/03/18 22:22:54 by davidaparic      ###   ########.fr       */
+/*   Updated: 2024/03/20 19:39:04 by daparici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ int	ft_lstsize_m(t_command *list)
 char	*find_path(char *cmd, char **path)
 {
 	char	*tmp;
+	char	*aux;
 
 	if (!access(cmd, X_OK))
 		return (cmd);
@@ -41,8 +42,9 @@ char	*find_path(char *cmd, char **path)
 	{
 		while (*path)
 		{
-			tmp = ft_strjoin(*path, "/");
-			tmp = ft_strjoin(tmp, cmd);
+			aux = ft_strjoin(*path, "/");
+			tmp = ft_strjoin(aux, cmd);
+			free(aux);
 			if (!access(tmp, X_OK))
 				return (tmp);
 			free(tmp);

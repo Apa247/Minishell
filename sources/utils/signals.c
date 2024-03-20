@@ -6,7 +6,7 @@
 /*   By: daparici <daparici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 14:52:14 by jverdu-r          #+#    #+#             */
-/*   Updated: 2024/03/19 19:33:42 by daparici         ###   ########.fr       */
+/*   Updated: 2024/03/20 19:55:40 by daparici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ static void	signal_int(int code)
     rl_on_new_line();
     rl_replace_line("", 0);
     rl_redisplay();
+	g_exit_status = 1;
 }
 
 static void signal_father(int code)

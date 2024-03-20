@@ -6,7 +6,7 @@
 /*   By: daparici <daparici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 16:53:02 by daparici          #+#    #+#             */
-/*   Updated: 2024/03/19 19:46:05 by daparici         ###   ########.fr       */
+/*   Updated: 2024/03/20 20:07:05 by daparici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	ft_executor(t_toolbox *tools)
 {
+	resolve_heredocs(tools->cmd, tools->env);
 	if (ft_lstsize_m(tools->cmd) > 1)
 		ft_executor_loop(tools->cmd, tools);
 	else
@@ -36,15 +37,11 @@ void	simple_command(t_toolbox *tools, t_command *cmd)
 	{
 		child_signals();
 		manage_dups(cmd, NULL, NULL);
-		if (cmd->heredoc)
+		if (cmd->heredoc && !cmd->args && cmd->in_fd <= 2)
 		{
-			check_here_doc(cmd, tools->env);
-			if (cmd->heredoc && !cmd->args && cmd->in_fd <= 2)
-			{
-				if (dup2(cmd->heredoc, 0) < 0)
-					(perror("minishell"), exit(1));
-				close(cmd->heredoc);
-			}
+			if (dup2(cmd->heredoc, 0) < 0)
+				(perror("minishell"), exit(1));
+			close(cmd->heredoc);
 		}
 		manage_params_child(tools, cmd);
 	}
@@ -77,7 +74,10 @@ int	ft_is_builtin(t_command *cmd)
 void	ft_is_builtin_2(t_toolbox *tools, t_command *cmd)
 {
 	if (ft_strcmp(cmd->cmd, "pwd") == 0)
+	{
+		dprintf(2, "hola\n");
 		ft_pwd();
+	}
 	else if (ft_strcmp(cmd->cmd, "echo") == 0)
 		ft_echo(cmd);
 	else if (ft_strcmp(cmd->cmd, "env") == 0)

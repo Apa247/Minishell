@@ -6,7 +6,7 @@
 /*   By: daparici <daparici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 15:07:55 by jverdu-r          #+#    #+#             */
-/*   Updated: 2024/03/19 19:34:11 by daparici         ###   ########.fr       */
+/*   Updated: 2024/03/20 19:55:30 by daparici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,9 @@
 # include "expander.h"
 # include "builtins.h"
 # include "GetNextLine/get_next_line.h"
+
+//global
+volatile sig_atomic_t	g_exit_status;
 
 //test
 t_command	*cmd_extract(t_lexer *list);
@@ -77,7 +80,6 @@ char	*find_paths(char **envp);
 char	*find_path(char *cmd, char **path);
 void	manage_params_child(t_toolbox *tools, t_command *cmd);
 void	manage_dups(t_command *cmd, int *pre_pipe, int *ac_pipe);
-void	heredoc_child(int *pre_p, int *ac_p, t_toolbox *tools, t_command *cmd);
 void	simple_command(t_toolbox *tools, t_command *cmd);
 int		ft_lstsize_m(t_command *list);
 char	**fill_args(t_command *cmd);
