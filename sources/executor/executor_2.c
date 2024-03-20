@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: daparici <daparici@student.42.fr>          +#+  +:+       +#+        */
+/*   By: davidaparicio <davidaparicio@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 22:23:21 by davidaparic       #+#    #+#             */
-/*   Updated: 2024/03/19 19:46:36 by daparici         ###   ########.fr       */
+/*   Updated: 2024/03/20 13:32:11 by davidaparic      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

@@ -6,7 +6,7 @@
 /*   By: davidaparicio <davidaparicio@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 14:14:30 by jverdu-r          #+#    #+#             */
-/*   Updated: 2024/03/20 00:46:56 by davidaparic      ###   ########.fr       */
+/*   Updated: 2024/03/20 12:20:34 by davidaparic      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ char	*ft_strjoin(char *s1, char *s2)
 		b++;
 	}
 	ptr[a] = 0;
-	free(s1);
-	free(s2);
+	//free(s1);
+	//free(s2);
 	return (ptr);
 }

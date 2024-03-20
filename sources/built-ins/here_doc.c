@@ -6,7 +6,7 @@
 /*   By: davidaparicio <davidaparicio@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 16:03:10 by daparici          #+#    #+#             */
-/*   Updated: 2024/03/20 02:04:15 by davidaparic      ###   ########.fr       */
+/*   Updated: 2024/03/20 13:16:39 by davidaparic      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,10 +61,13 @@ void	check_here_doc(t_command *cmd, char **env)
 		{
 			aux = expander_hdoc(line, env);
 			ft_putstr_fd(aux, pipe1[1]);
+			ft_putchar_fd('\n', pipe1[1]);
+			free(line);
 			free(aux);
-			line = 0;
-			line = readline(">");
+			line = readline("> ");
 		}
+		if (line)
+			free(line);
 		close(pipe1[1]);
 		i++;
 	}
