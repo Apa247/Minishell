@@ -6,36 +6,65 @@
 /*   By: davidaparicio <davidaparicio@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 16:03:10 by daparici          #+#    #+#             */
-/*   Updated: 2024/03/20 00:15:55 by davidaparic      ###   ########.fr       */
+/*   Updated: 2024/03/20 02:04:15 by davidaparic      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+// void	check_here_doc(t_command *cmd, char **env)
+// {
+// 	int		pipe1[2];
+// 	char	*line;
+// 	char	*aux;
+// 	int		i;
+
+// 	(void)env;
+// 	i = 0;
+// 	while (cmd->limiter[i])
+// 	{
+// 		pipe(pipe1);
+// 		write(2, "> ", 2);
+// 		line = get_next_line(0);
+// 		while (ft_strlen(cmd->limiter[i]) != (ft_strlen(line) - 1)
+// 			|| ft_strncmp(line, cmd->limiter[i], ft_strlen(cmd->limiter[i])))
+// 		{
+// 			aux = expander_hdoc(line, env);
+// 			write(2, "> ", 2);
+// 			ft_putstr_fd(aux, pipe1[1]);
+// 			free(aux);
+// 			line = get_next_line(0);
+// 		}
+// 		free(line);
+// 		close(pipe1[1]);
+// 		i++;
+// 	}
+// 	cmd->heredoc = pipe1[0];
+// }
 
 void	check_here_doc(t_command *cmd, char **env)
 {
 	int		pipe1[2];
 	char	*line;
 	char	*aux;
+	t_list	*list;
 	int		i;
 
-	(void)env;
 	i = 0;
+	list = 0;
 	while (cmd->limiter[i])
 	{
 		pipe(pipe1);
-		ft_putchar_fd('>', 2);
-		line = get_next_line(0);
+		line = readline("> ");
 		while (ft_strlen(cmd->limiter[i]) != (ft_strlen(line) - 1)
 			|| ft_strncmp(line, cmd->limiter[i], ft_strlen(cmd->limiter[i])))
 		{
 			aux = expander_hdoc(line, env);
-			ft_putchar_fd('>', 2);
 			ft_putstr_fd(aux, pipe1[1]);
 			free(aux);
-			line = get_next_line(0);
+			line = 0;
+			line = readline(">");
 		}
-		free(line);
 		close(pipe1[1]);
 		i++;
 	}
@@ -72,7 +101,6 @@ char	*expander_hdoc(char *str, char **env)
 			i++;
 		}
 	}
-	free(str);
 	return (expand_str);
 }
 

@@ -6,7 +6,7 @@
 #    By: davidaparicio <davidaparicio@student.42    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/24 15:20:41 by jverdu-r          #+#    #+#              #
-#    Updated: 2024/03/19 21:24:42 by davidaparic      ###   ########.fr        #
+#    Updated: 2024/03/20 01:46:18 by davidaparic      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -75,7 +75,7 @@ $(NAME):	$(OBJS) $(GNLOBJ) $(LIBFT_A)
 			@echo "Linked into excutable \033[0;32mminishell\033[0m."
 
 $(LIBFT_A):	
-			@$(MAKE) -s -C $(LIBFT)
+			@$(MAKE) bonus -s -C $(LIBFT)
 			@echo "compiled $(LIBFT_A)."
 .c.o:		
 			@$(CC) $(CFLAGS) -c $< -o $(<:.c=.o)
