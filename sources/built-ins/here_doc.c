@@ -6,7 +6,7 @@
 /*   By: daparici <daparici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 16:03:10 by daparici          #+#    #+#             */
-/*   Updated: 2024/03/21 14:06:17 by daparici         ###   ########.fr       */
+/*   Updated: 2024/03/21 14:25:14 by daparici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,29 @@
 void	resolve_heredocs(t_command *cmd, char **env)
 {
 	t_command	*aux;
+	int			pid;
+	int			status;
 
+	father_workout();
 	aux = cmd;
-	while (aux)
+	pid = fork();
+	if (pid < 0)
+		(perror("minishell:"), exit(1));
+	if (pid == 0)
 	{
-		if (aux->heredoc)
-			check_here_doc(aux, env);
-		if (aux->next)
-			aux = aux->next;
-		else
-			break ;
+		sig_heredoc();
+		while (aux)
+		{
+			if (aux->heredoc)
+				check_here_doc(aux, env);
+			if (aux->next)
+				aux = aux->next;
+			else
+				break ;
+		}
 	}
+	else
+		waitpid(pid, &status, 0);
 }
 
 void	check_here_doc(t_command *cmd, char **env)
@@ -34,44 +46,32 @@ void	check_here_doc(t_command *cmd, char **env)
 	char	*line;
 	char	*aux;
 	int		i;
-	int		pid;
-	int		status;
 
 	i = 0;
-	father_workout();
-	//signal(SIGINT, SIG_IGN);
-	pid = fork();
-	if (pid < 0)
-		(perror("minishell:"), exit(1));
-	if (pid == 0)
+	sig_heredoc();
+	while (cmd->limiter[i])
 	{
-		sig_heredoc();
-		while (cmd->limiter[i] && g_exit_status != 1)
+		pipe(pipe1);
+		write(2, "> ", 2);
+		line = get_next_line(0);
+		while (ft_strlen(cmd->limiter[i]) != (ft_strlen(line) - 1)
+			|| ft_strncmp(line, cmd->limiter[i],
+				ft_strlen(cmd->limiter[i])))
 		{
-			pipe(pipe1);
+			aux = expander_hdoc(line, env);
 			write(2, "> ", 2);
+			ft_putstr_fd(aux, pipe1[1]);
+			free(aux);
 			line = get_next_line(0);
-			while (ft_strlen(cmd->limiter[i]) != (ft_strlen(line) - 1)
-				|| ft_strncmp(line, cmd->limiter[i],
-					ft_strlen(cmd->limiter[i])))
-			{
-				aux = expander_hdoc(line, env);
-				write(2, "> ", 2);
-				ft_putstr_fd(aux, pipe1[1]);
-				free(aux);
-				line = get_next_line(0);
-			}
-			free(line);
-			close(pipe1[1]);
-			i++;
 		}
-		if (cmd->limiter)
-			cmd->heredoc = pipe1[0];
+		free(line);
+		close(pipe1[1]);
+		if (cmd->limiter[i + 1])
+			close(pipe1[0]);
+		i++;
 	}
-	else
-	{
-		waitpid(pid, &status, 0);
-	}
+	if (cmd->limiter)
+		cmd->heredoc = pipe1[0];
 }
 
 // void	check_here_doc(t_command *cmd, char **env)
