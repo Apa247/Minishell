@@ -6,7 +6,7 @@
 /*   By: daparici <daparici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 16:53:02 by daparici          #+#    #+#             */
-/*   Updated: 2024/03/20 20:07:05 by daparici         ###   ########.fr       */
+/*   Updated: 2024/03/21 13:55:23 by daparici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,15 @@
 
 void	ft_executor(t_toolbox *tools)
 {
-	resolve_heredocs(tools->cmd, tools->env);
+	if (tools->cmd->heredoc)
+		resolve_heredocs(tools->cmd, tools->env);
 	if (ft_lstsize_m(tools->cmd) > 1)
 		ft_executor_loop(tools->cmd, tools);
 	else
 	{
 		if (ft_is_builtin(tools->cmd) == 0)
 			ft_is_builtin_2(tools, tools->cmd);
-		else
+		else if (ft_is_builtin(tools->cmd) != 0 && tools->cmd->cmd)
 			simple_command(tools, tools->cmd);
 	}
 }
@@ -74,10 +75,7 @@ int	ft_is_builtin(t_command *cmd)
 void	ft_is_builtin_2(t_toolbox *tools, t_command *cmd)
 {
 	if (ft_strcmp(cmd->cmd, "pwd") == 0)
-	{
-		dprintf(2, "hola\n");
 		ft_pwd();
-	}
 	else if (ft_strcmp(cmd->cmd, "echo") == 0)
 		ft_echo(cmd);
 	else if (ft_strcmp(cmd->cmd, "env") == 0)

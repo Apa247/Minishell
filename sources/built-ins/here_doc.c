@@ -6,7 +6,7 @@
 /*   By: daparici <daparici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 16:03:10 by daparici          #+#    #+#             */
-/*   Updated: 2024/03/20 20:04:22 by daparici         ###   ########.fr       */
+/*   Updated: 2024/03/21 14:06:17 by daparici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,32 +34,79 @@ void	check_here_doc(t_command *cmd, char **env)
 	char	*line;
 	char	*aux;
 	int		i;
+	int		pid;
+	int		status;
 
 	i = 0;
-	while (cmd->limiter[i])
+	father_workout();
+	//signal(SIGINT, SIG_IGN);
+	pid = fork();
+	if (pid < 0)
+		(perror("minishell:"), exit(1));
+	if (pid == 0)
 	{
-		pipe(pipe1);
-		write(2, "> ", 2);
-		line = get_next_line(0);
-		// if (g_exit_status == 1)
-		// 	break ;
-		while (ft_strlen(cmd->limiter[i]) != (ft_strlen(line) - 1)
-			|| ft_strncmp(line, cmd->limiter[i], ft_strlen(cmd->limiter[i])))
+		sig_heredoc();
+		while (cmd->limiter[i] && g_exit_status != 1)
 		{
-			aux = expander_hdoc(line, env);
+			pipe(pipe1);
 			write(2, "> ", 2);
-			// if (g_exit_status == 1)
-			// 	break ;
-			ft_putstr_fd(aux, pipe1[1]);
-			free(aux);
 			line = get_next_line(0);
+			while (ft_strlen(cmd->limiter[i]) != (ft_strlen(line) - 1)
+				|| ft_strncmp(line, cmd->limiter[i],
+					ft_strlen(cmd->limiter[i])))
+			{
+				aux = expander_hdoc(line, env);
+				write(2, "> ", 2);
+				ft_putstr_fd(aux, pipe1[1]);
+				free(aux);
+				line = get_next_line(0);
+			}
+			free(line);
+			close(pipe1[1]);
+			i++;
 		}
-		free(line);
-		close(pipe1[1]);
-		i++;
+		if (cmd->limiter)
+			cmd->heredoc = pipe1[0];
 	}
-	cmd->heredoc = pipe1[0];
+	else
+	{
+		waitpid(pid, &status, 0);
+	}
 }
+
+// void	check_here_doc(t_command *cmd, char **env)
+// {
+// 	int		pipe1[2];
+// 	char	*line;
+// 	char	*aux;
+// 	int		i;
+
+// 	i = 0;
+// 	while (cmd->limiter[i] && g_exit_status != 1)
+// 	{
+// 		pipe(pipe1);
+// 		write(2, "> ", 2);
+// 		line = get_next_line(0);
+// 		while (ft_strlen(cmd->limiter[i]) != (ft_strlen(line) - 1)
+// 			|| ft_strncmp(line, cmd->limiter[i], ft_strlen(cmd->limiter[i])))
+// 		{
+// 			if (g_exit_status == 1)
+// 				break ;
+// 			aux = expander_hdoc(line, env);
+// 			write(2, "> ", 2);
+// 			ft_putstr_fd(aux, pipe1[1]);
+// 			free(aux);
+// 			line = get_next_line(0);
+// 		}
+// 		if (g_exit_status == 1)
+// 			break ;
+// 		free(line);
+// 		close(pipe1[1]);
+// 		i++;
+// 	}
+// 	if (cmd->limiter)
+// 		cmd->heredoc = pipe1[0];
+// }
 
 char	*expander_hdoc(char *str, char **env)
 {

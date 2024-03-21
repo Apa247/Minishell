@@ -6,7 +6,7 @@
 /*   By: daparici <daparici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 15:07:55 by jverdu-r          #+#    #+#             */
-/*   Updated: 2024/03/20 19:55:30 by daparici         ###   ########.fr       */
+/*   Updated: 2024/03/21 14:06:40 by daparici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,10 @@ int			check_syntax(t_lexer *tk_list);
 
 
 //signal functions
-void	signals_workout(void);
-void    child_signals(void);
-void    father_workout(void);
+void		sig_heredoc(void);
+void		signals_workout(void);
+void   		child_signals(void);
+void    	father_workout(void);
 
 //loop functions
 int		minishell_loop(t_toolbox *tools);
