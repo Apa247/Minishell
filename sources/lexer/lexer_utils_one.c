@@ -12,15 +12,17 @@
 
 #include "../../includes/minishell.h"
 
+extern sig_atomic_t	g_exit_status;
+
 t_lexer	*lexer_new(char	*str, t_token token)
 {
 	t_lexer	*new;
-
+	
 	new = malloc(sizeof(t_lexer));
 	if (!new)
 		return (NULL);
-	new->str = str;
 	new->token = token;
+	new->str = str;
 	new->index = 0;
 	new->next = NULL;
 	new->prev = NULL;
@@ -78,15 +80,28 @@ void	lexer_addback(t_lexer **head, t_lexer *new)
 {
 	t_lexer	*tmp;
 
-	tmp = *head;
-	if (*head == NULL)
-		*head = new;
+	if (ft_strlen(new->str) > 0 || new->token > 0)
+	{
+		tmp = *head;
+		if (*head == NULL)
+			*head = new;
+		else
+		{
+			while (tmp->next)
+			{
+				if (tmp->next)
+					tmp = tmp->next;
+				else
+					break ;
+			}
+			tmp->next = new;
+			new->index = tmp->index + 1;
+			new->prev = tmp;
+		}
+	}
 	else
 	{
-		while (tmp->next)
-			tmp = tmp->next;
-		tmp->next = new;
-		new->index = tmp->index + 1;
-		new->prev = tmp;
+		free(new->str);
+		free(new);
 	}
 }

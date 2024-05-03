@@ -12,6 +12,8 @@
 
 #include "../../includes/minishell.h"
 
+extern sig_atomic_t	g_exit_status;
+
 t_command	*cmd_list(t_lexer *list)
 {
 	t_command	*cmd;
@@ -34,16 +36,20 @@ t_lexer	*redir_add(t_command *cmd, t_lexer *list)
 {
 	if (list->token == LESS)
 		redir_addback(&cmd->in_files, redir_new(list->next->str));
-	if (list->token == GREAT)
+	if (list->token == GREAT || list->token == GREAT_GREAT)
+	{
 		redir_addback(&cmd->out_files, redir_new(list->next->str));
+		if (list->token == GREAT_GREAT)
+			cmd->app = 1;
+		else
+			cmd->app = 0;
+	}
 	if (list->token == LESS_LESS)
 	{
 		cmd->limiter = lim_add(cmd->limiter, \
 			cmd->heredoc, list->next->str);
 		cmd->heredoc++;
 	}
-	if (list->token == GREAT_GREAT)
-		cmd->append = ft_strdup(list->next->str);
 	list = list->next;
 	return (list);
 }

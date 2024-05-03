@@ -12,20 +12,22 @@
 
 #include "../../includes/minishell.h"
 
+extern sig_atomic_t	g_exit_status;
+
 t_token	check_token(char *tk, int i)
 {
 	if (tk[i] == '|')
 		return (PIPE);
 	if (tk[i] == '<')
 	{
-		if (tk[i + 1] == '<')
+		if (tk[i + 1] && tk[i + 1] == '<')
 			return (LESS_LESS);
 		else
 			return (LESS);
 	}
 	if (tk[i] == '>')
 	{
-		if (tk[i + 1] == '>')
+		if (tk[i + 1] && tk[i + 1] == '>')
 			return (GREAT_GREAT);
 		else
 			return (GREAT);

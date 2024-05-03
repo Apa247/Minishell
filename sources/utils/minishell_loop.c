@@ -12,13 +12,16 @@
 
 #include "../../includes/minishell.h"
 
+extern sig_atomic_t	g_exit_status;
+
 void	tools_reload(t_toolbox *tools)
 {
-	lexer_free(tools->lexer_list);
+	if (tools->lexer_list)
+		lexer_free(tools->lexer_list);
+	tools->lexer_list = NULL;
 	if (tools->args)
 		free(tools->args);
 	tools->args = NULL;
-	tools->lexer_list = NULL;
 	if (tools->cmd)
 		cmd_free(tools->cmd);
 	tools->cmd = NULL;

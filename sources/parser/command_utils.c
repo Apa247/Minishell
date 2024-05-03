@@ -12,6 +12,8 @@
 
 #include "../../includes/minishell.h"
 
+extern sig_atomic_t	g_exit_status;
+
 t_command	*init_cmd(void)
 {
 	t_command	*cmd;
@@ -19,6 +21,7 @@ t_command	*init_cmd(void)
 	cmd = malloc(sizeof(t_command));
 	cmd->cmd = NULL;
 	cmd->heredoc = 0;
+	cmd->app = 0;
 	cmd->append = NULL;
 	cmd->limiter = NULL;
 	cmd->args = NULL;
@@ -91,6 +94,7 @@ void	cmd_show(t_command *cmd)
 				printf("out_file: %s\n", out_aux->file);
 				out_aux = out_aux->next;
 			}
+			
 		}
 		if (aux->in_files)
 		{
@@ -101,6 +105,7 @@ void	cmd_show(t_command *cmd)
 				in_aux = in_aux->next;
 			}
 		}
+		printf("have to append: %d\n", aux->app);
 		aux = aux->next;
 	}
 }

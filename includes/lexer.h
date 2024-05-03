@@ -11,12 +11,12 @@
 /* ************************************************************************** */
 
 #ifndef LEXER_H
-#define LEXER_H
+# define LEXER_H
 
-#include "libft/libft.h"
-#include "tokens.h"
-#include "structs.h"
-#include "minishell.h"
+# include "libft/libft.h"
+# include "tokens.h"
+# include "structs.h"
+# include "minishell.h"
 
 void	lexer_addback(t_lexer **head, t_lexer *new);
 void	lexer_add(t_lexer **head, t_lexer *new);

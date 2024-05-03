@@ -12,6 +12,8 @@
 
 #include "../../includes/minishell.h"
 
+extern sig_atomic_t	g_exit_status;
+
 int	lexer_length(t_lexer *list)
 {
 	int			i;
@@ -28,24 +30,25 @@ int	lexer_length(t_lexer *list)
 	}
 	return (i);
 }
-
+ 
 void	lexer_free(t_lexer *list)
 {
+	t_lexer *aux;
+
+
 	if (list)
 	{
-		while (list->next)
+		while (list)
 		{
-			if (list->token == 0)
+			if (list->str)
 				free(list->str);
-			list = list->next;
-			free(list->prev);
+			aux = list;
+			free(aux);
+			if (list->next)
+				list = list->next;
+			else
+				break ;
 		}
-		if (!list->next)
-		{
-			if (list->token == 0)
-				free(list->str);
-		}
-		free(list);
 	}
 }
 
@@ -63,10 +66,10 @@ void	lexer_show(t_lexer *list)
 			if (!ft_strcmp(tmp->str, " "))
 				printf("space\n");
 			else
-				printf("str: %s\n", tmp->str);
+				printf("str: %p, %s\n", tmp->str, tmp->str);
 		}
 		if (tmp->token)
-			printf("token: %d\n", tmp->token);
+			printf("token: %u, %d\n", tmp->token, tmp->token);
 		printf("\n---end node---\n");
 		tmp = tmp->next;
 	}

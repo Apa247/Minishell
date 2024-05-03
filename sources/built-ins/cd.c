@@ -12,6 +12,8 @@
 
 #include "../../includes/minishell.h"
 
+extern sig_atomic_t	g_exit_status;
+
 char	*get_env_dir(t_toolbox *tools, char *arg)
 {
 	int	i;
@@ -84,9 +86,7 @@ int		ft_cd(t_toolbox *tools)
 			ft_putstr_fd(" not set\n", 2);
 		}
 		else
-		{
 			render_env(tools);
-		}
 	}
 	return (EXIT_SUCCESS);
 }

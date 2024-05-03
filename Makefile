@@ -6,7 +6,7 @@
 #    By: daparici <daparici@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/24 15:20:41 by jverdu-r          #+#    #+#              #
-#    Updated: 2024/03/20 18:52:34 by daparici         ###   ########.fr        #
+#    Updated: 2024/05/02 23:50:16 by daparici         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,10 +44,8 @@ SRCS	=	sources/main.c \
 			sources/parser/handle_redirs.c \
 			sources/error/errors.c \
 			sources/expander/expander_one.c \
-			sources/expander/expander_two.c \
 			sources/expander/expander_utils_one.c \
 			sources/expander/expander_utils_two.c \
-			sources/expander/lim_trimmer.c \
 			sources/built-ins/echo.c \
 			sources/executor/executor.c \
 			sources/executor/executor_2.c \
@@ -59,14 +57,14 @@ SRCS	=	sources/main.c \
 			sources/built-ins/unset.c \
 			sources/built-ins/cd.c \
 			sources/built-ins/here_doc.c \
-			
+			sources/built-ins/here_doc_2.c \
 
 OBJS	=	$(SRCS:%.c=%.o)
 GNLOBJ 	= 	$(GNLPATH:.c=.o)
 
-READ	=  	/System/Volumes/Data/Users/${USER}/.brew/Cellar/readline/8.2.1
+#READ	=  	/System/Volumes/Data/Users/${USER}/.brew/Cellar/readline/8.2.1
 #READ	=  	/System/Volumes/Data/Users/jverdu-r/.brew/Cellar/readline/8.2.1
-#READ	=  	/usr/local/Cellar/readline/8.2.1
+READ	=  	/usr/local/Cellar/readline/8.2.10
 
 all:		$(NAME)
 
@@ -92,6 +90,7 @@ clean:		localclean
 fclean:		localclean
 			@$(MAKE) fclean -s -C $(LIBFT)
 			@echo "Full clean libft."
+			@$(RM) $(GNLOBJ)
 			@$(RM) $(NAME)
 			@echo "Removed excutable file."
 

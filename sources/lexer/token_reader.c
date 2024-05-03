@@ -12,6 +12,8 @@
 
 #include "../../includes/minishell.h"
 
+extern sig_atomic_t	g_exit_status;
+
 int	is_white_space(char c)
 {
 	if (c == '\t' || c == '\n' || c == '\v' \
@@ -22,14 +24,32 @@ int	is_white_space(char c)
 
 int	get_quoted(char *args, t_lexer **list, int cr)
 {
-	int	ct;
+	char	cqt;
+	int	ct[3];
 
-	ct = 1;
-	while (args[cr + ct] && args[cr + ct] != args[cr])
-		ct++;
+	ct[0] = 1;
+	ct[1] = 1;
+	ct[2] = cr;
+	cqt = args[cr];
+	while (args[ct[2] + ct[0]])
+	{
+		if (ct[1] == 0 && (args[ct[2] + ct[0]] == '\"' \
+			|| args[ct[2] + ct[0]] == '\''))
+		{
+			cqt = args[ct[2] + ct[0]];
+			ct[1] = 1;
+		}
+		else if (args[ct[2] + ct[0]] == cqt)
+			ct[1] = 0;
+		if (ct[1] == 0 && is_white_space(args[ct[2] + ct[0]]))
+			break ;
+		ct[0]++;
+	}
+	if (args[ct[2] + ct[0]] == ' ')
+		ct[0]--;
 	lexer_addback(list, \
-		lexer_new(ft_substr(args, cr, ct + 1), 0));
-	cr += ct + 1;
+		lexer_new(ft_substr(args, cr, ct[0] + 1), 0));
+	cr += ct[0] + 1;
 	return (cr);
 }
 

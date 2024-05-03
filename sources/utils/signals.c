@@ -12,6 +12,8 @@
 
 #include "../../includes/minishell.h"
 
+extern sig_atomic_t	g_exit_status;
+
 static void	signal_int(int code)
 {
 	(void)code;
@@ -61,10 +63,27 @@ void	child_signals(void)
 	signal(SIGINT, signal_int);
 }
 
+void	println(int sig)
+{
+	(void)sig;
+	printf("\n");
+	exit(0);
+}
 void	sig_heredoc(void)
 {
-	signal(SIGINT, SIG_DFL);
-	rl_on_new_line();
-	rl_replace_line("", 0);
+	signal(SIGINT, println);
+	//rl_on_new_line();
+	//rl_replace_line("", 0);
 	signal(SIGQUIT, SIG_IGN);
+}
+
+
+
+void	sig_ignire(void)
+{
+	signal(SIGQUIT, SIG_IGN);
+	signal(SIGTTIN, SIG_IGN);
+	signal(SIGTTOU, SIG_IGN);
+	signal(SIGTSTP, SIG_IGN);
+	signal(SIGINT, SIG_IGN);
 }

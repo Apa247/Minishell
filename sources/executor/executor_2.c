@@ -6,7 +6,7 @@
 /*   By: daparici <daparici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 22:23:21 by davidaparic       #+#    #+#             */
-/*   Updated: 2024/03/20 19:40:33 by daparici         ###   ########.fr       */
+/*   Updated: 2024/05/03 23:53:50 by daparici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,8 @@ void	ft_executor_loop(t_command *cmd, t_toolbox *tools)
 {
 	int			ac_pipe[2];
 	t_command	*cmd_aux;
-	int			i;
 	int			status;
 
-	i = 0;
 	cmd_aux = cmd;
 	pipe(ac_pipe);
 	recursive_ex(ac_pipe, cmd_aux, tools);
@@ -85,7 +83,7 @@ void	manage_dups(t_command *cmd, int *pre_pipe, int *ac_pipe)
 			(perror("minishell:"), exit(1));
 		close(cmd->in_fd);
 	}
-	if (cmd->out_fd > 2)
+	if (cmd->out_fd > 2 && ft_strcmp("echo", cmd->cmd))
 	{
 		if (dup2(cmd->out_fd, 1) < 0)
 			(perror("minishell:"), exit(1));
@@ -112,7 +110,7 @@ void	manage_params_child(t_toolbox *tools, t_command *cmd)
 	cmd_rute = find_path(cmd->cmd, path_rutes);
 	if (!cmd_rute)
 		(perror("minishell:"), exit(1));
-	if (execve(cmd_rute, cmd_arg, tools->env) < 0)
+	if (execve(cmd_rute, cmd_arg, tools->env) < 0) 
 		(perror("minishell:"), exit(1));
 }
 
@@ -131,5 +129,3 @@ void	heredoc_child(int *pre_p, int *ac_p, t_command *cmd)
 		close(cmd->heredoc);
 	}
 }
-
-

@@ -12,61 +12,90 @@
 
 #include "../../includes/minishell.h"
 
-char	*check_str(char *str, char **env, int i)
+extern sig_atomic_t	g_exit_status;
+
+char	*check_str_two(char *str, char **env, int i, int *qt)
+{
+	char	*aux;
+	char	*exp;
+	char	*res;
+
+	res = ft_strdup("");
+	while (str[i])
+	{
+		aux = res;
+		if (str[i] == '\'' || str[i] == '\"')
+			qt = switch_qt(qt, str[i]);
+		if (qt[0] == 0 && qt[1] == 1)
+			res = charjoin(aux, str[i]);
+		if ((qt[0] == 0 && qt[1] == 0) || (qt[0] == 1 && qt[1] == 0))
+		{
+			if (str[i] == '$')
+			{
+				exp = var_find(str, i, env);
+				res = ft_strjoin(aux, exp);
+				free(aux);
+				free(exp);
+				i = ovarpass(str, i);
+			}
+			else
+				res = charjoin(aux, str[i]);
+		}
+		i++;
+	}
+	return (res);
+}
+
+char	*check_str(char *str, char **env)
+{
+	int		*qt;
+	int		i;
+	char	*res;
+	char	*aux;
+
+	qt = init_qt();
+	i = 0;
+	aux = check_str_two(str, env, i, qt);
+	free(qt);
+	free(str);
+	res = trimmed(aux, 0, 0);
+	return (res);
+}
+
+char	**check_args(char **args, char **env)
+{
+	int	i;
+	char	**res;
+	char	*aux;
+
+	i = 0;
+	while (args[i])
+		i++;
+	res = ft_calloc(sizeof(char *), i + 1);
+	i = 0;
+	while (args[i])
+	{
+		aux = check_str(args[i], env);
+		res[i] = ft_strdup(aux);
+		free(aux);
+		i++;
+	}
+	free(args);
+	res[i] = 0;
+	return (res);
+}
+
+void	check_redir(t_redir *lst, char **env)
 {
 	char	*aux;
 
-	if (i == 0)
+	while (lst)
 	{
-		aux = split_words(str, env);
-		free(str);
+		aux = lst->file;
+		lst->file = check_exp_redir(aux, env);
+		free(aux);
+		lst = lst->next;
 	}
-	else
-	{
-		aux = split_trim(str);
-		free(str);
-	}
-	return (aux);
-}
-
-void	check_redir(t_redir *red, char **env)
-{
-	t_redir	*aux;
-	char	*str;
-
-	aux = red;
-	while (aux)
-	{
-		if (ft_strlen(aux->file) > 2)
-			str = check_str(aux->file, env, 0);
-		else
-			str = aux->file;
-		aux->file = str;
-		aux = aux->next;
-	}
-}
-
-char	**check_args(char **args, char **env, int t)
-{
-	int		i;
-	char	**aux;
-
-	i = 0;
-	while (args[i])
-		i++;
-	aux = ft_calloc(sizeof(char *), (i + 1));
-	i = 0;
-	while (args[i])
-	{
-		if (ft_strlen(args[i]) > 2)
-			aux[i] = check_str(args[i], env, t);
-		else
-			aux[i] = args[i];
-		i++;
-	}
-	aux[i] = 0;
-	free(args);
-	return (aux);
 }
 
 void	expander(t_toolbox *tools)
@@ -77,17 +106,13 @@ void	expander(t_toolbox *tools)
 	while (cmd)
 	{
 		if (ft_strlen(cmd->cmd) > 2)
-			cmd->cmd = check_str(cmd->cmd, tools->env, 0);
-		if (cmd->append && ft_strlen(cmd->append) > 2)
-			cmd->append = check_str(cmd->append, tools->env, 0);
+			cmd->cmd = check_str(cmd->cmd, tools->env);
 		if (cmd->args)
-			cmd->args = check_args(cmd->args, tools->env, 0);
+			cmd->args = check_args(cmd->args, tools->env);
 		if (cmd->in_files)
 			check_redir(cmd->in_files, tools->env);
 		if (cmd->out_files)
 			check_redir(cmd->out_files, tools->env);
-		if (cmd->limiter)
-			cmd->limiter = check_args(cmd->limiter, tools->env, 1);
 		cmd = cmd->next;
 	}
 }

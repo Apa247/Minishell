@@ -12,73 +12,74 @@
 
 #include "../../includes/minishell.h"
 
-char	*arr_join(char **arr)
-{
-	int		i;
-	char	*str;
-	char	*aux;
+extern sig_atomic_t	g_exit_status;
 
-	i = 1;
-	str = ft_strdup(arr[0]);
-	if (!arr[i])
-		return (str);
-	while (arr && arr[i])
+int	ovarpass(char *str, int i)
+{
+	while (!is_space(str[i]) && str[i] != '\"' \
+		&& str[i] != '\'' && str[i])
+		i++;
+	if (str[i] == '\"' || str[i] == '\'' || is_space(str[i]))
+		i--;
+	return (i);
+}
+
+int	*init_qt(void)
+{
+	int	*qt;
+
+	qt = ft_calloc(sizeof(int), 2);
+	qt[0] = 0;
+	qt[1] = 0;
+	return (qt);
+}
+
+char	*expnd(char *str, char **env)
+{
+	char	*aux;
+	char	**r_var;
+	int	i;
+
+	aux = ft_strjoin(str, "=");
+	i = 0;
+	while (env[i])
 	{
-		aux = str;
-		str = ft_strjoin(aux, arr[i]);
-		free(aux);
+		if (ft_strnstr(env[i], aux, ft_strlen(aux)))
+		{
+			r_var = ft_split(env[i], '=');
+			free(aux);
+			aux = ft_strdup(r_var[1]);
+			free_arr(r_var);
+			free(str);
+			return (aux);
+		}
 		i++;
 	}
-	return (str);
+	free(aux);
+	aux = malloc(sizeof(char) * 1);
+	aux[0] = 0;
+	free(str);
+	return (aux);
 }
 
-int	word_count(char *str)
+char	*init_aux(void)
 {
+	char	*aux;
+
+	aux = ft_calloc(sizeof(char), 1);
+	aux[0] = 0;
+	return (aux);
+}
+
+char	*check_exp_redir(char *str, char **env)
+{
+	int		*qt;
 	int		i;
-	int		wd;
-	t_bool	qt;
-
-	if (!str)
-		return (0);
-	else
-	{
-		i = 0;
-		wd = 1;
-		qt = FALSE;
-		while (str[i])
-		{
-			if (str[i] == '\'' || str[i] == '\"')
-			{
-				qt = switch_bool(qt);
-				if (qt == TRUE)
-					wd++;
-			}
-			i++;
-		}
-		return (wd);
-	}
-}
-
-char	*get_res(char **words, char **env)
-{
-	char	**aux;
 	char	*res;
 
-	aux = exp_words(words, env);
-	res = arr_join(aux);
-	free_arr(words);
-	free_arr(aux);
-	return (res);
-}
-
-char	*get_trim(char **words)
-{
-	char	**aux;
-	char	*res;
-
-	aux = get_words(words);
-	res = arr_join(aux);
-	free_arr(words);
-	free_arr(aux);
-	return (res);
+	qt = init_qt();
+	i = 0;
+	res = check_str_two(str, env, i, qt);
+	free(qt);
+	return (trimmed(res, 0, 0));
 }

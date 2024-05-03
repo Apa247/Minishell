@@ -12,11 +12,13 @@
 
 #include "../../includes/minishell.h"
 
+extern sig_atomic_t	g_exit_status;
+
 t_redir	*redir_new(char *str)
 {
 	t_redir	*new;
 
-	new = malloc(sizeof(t_redir));
+	new = ft_calloc(sizeof(t_redir), 1);
 	if (!new)
 		return (NULL);
 	new->file = ft_strdup(str);
@@ -73,11 +75,15 @@ void	redir_show(t_redir *list, char *str)
 
 void	redir_free(t_redir *redir)
 {
+	while (redir->prev)
+		redir = redir->prev;
 	while (redir->next)
 	{
-		free(redir->file);
+		if (redir->file)
+			free(redir->file);
 		redir = redir->next;
-		free(redir->prev);
+		if (redir->prev)
+			free(redir->prev);
 	}
 	free(redir->file);
 	free(redir);
