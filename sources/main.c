@@ -3,17 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: daparici <daparici@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jverdu-r <jverdu-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 10:28:15 by jverdu-r          #+#    #+#             */
-/*   Updated: 2024/03/20 19:05:17 by daparici         ###   ########.fr       */
+/*   Updated: 2024/05/15 18:03:48 by jverdu-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "../includes/minishell.h"
 
-sig_atomic_t	g_exit_status;
+int	g_exit_status = 0;
 
 void	leaks(void)
 {
@@ -24,7 +23,6 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_toolbox	*tools;
 
-	//atexit(leaks);
 	if (argc != 1 || argv[1])
 	{
 		printf("Minishell must be executed wihtout arguments");

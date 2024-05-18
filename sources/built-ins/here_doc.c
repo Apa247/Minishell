@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: daparici <daparici@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jorge <jorge@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 16:03:10 by daparici          #+#    #+#             */
-/*   Updated: 2024/05/03 22:39:16 by daparici         ###   ########.fr       */
+/*   Updated: 2024/05/15 11:17:09 by jorge            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-extern sig_atomic_t	g_exit_status;
 
 void	resolve_heredocs(t_command *cmd, char **env)
 {
@@ -82,6 +80,7 @@ void	child_control(int *pipe1, char **env, t_command *cmd, int i)
 		write(2, "> ", 2);
 		ft_putstr_fd(aux, pipe1[1]);
 		free(aux);
+		free(line);
 		line = get_next_line(0);
 	}
 	(free(str_trimed), free(line), close(pipe1[1]), close(pipe1[0]));

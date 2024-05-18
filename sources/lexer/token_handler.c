@@ -6,13 +6,11 @@
 /*   By: jverdu-r <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 19:40:51 by jverdu-r          #+#    #+#             */
-/*   Updated: 2023/10/17 12:12:13 by jverdu-r         ###   ########.fr       */
+/*   Updated: 2024/05/13 17:03:50 by jverdu-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-extern sig_atomic_t	g_exit_status;
 
 t_token	check_token(char *tk, int i)
 {

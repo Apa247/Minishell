@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   errors.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jverdu-r <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jverdu-r <jverdu-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 17:32:32 by jverdu-r          #+#    #+#             */
-/*   Updated: 2023/06/22 17:45:41 by jverdu-r         ###   ########.fr       */
+/*   Updated: 2024/05/15 19:30:23 by jverdu-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-extern sig_atomic_t	g_exit_status;
+extern int	g_exit_status;
 
 int	error_msg(char *msg)
 {
@@ -33,5 +33,6 @@ int	error_token(t_token token)
 		printf("'>'%i\n", STDERR_FILENO);
 	if (token == GREAT_GREAT)
 		printf("'>>'%i\n", STDERR_FILENO);
+	g_exit_status = 2;
 	return (-1);
 }

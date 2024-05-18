@@ -3,20 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   executor_2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: daparici <daparici@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jverdu-r <jverdu-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 22:23:21 by davidaparic       #+#    #+#             */
-/*   Updated: 2024/05/03 23:53:50 by daparici         ###   ########.fr       */
+/*   Updated: 2024/05/15 17:37:06 by jverdu-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
+extern int	g_exit_status;
+
 void	ft_executor_loop(t_command *cmd, t_toolbox *tools)
 {
 	int			ac_pipe[2];
 	t_command	*cmd_aux;
-	int			status;
 
 	cmd_aux = cmd;
 	pipe(ac_pipe);
@@ -26,7 +27,7 @@ void	ft_executor_loop(t_command *cmd, t_toolbox *tools)
 	father_workout();
 	while (cmd_aux)
 	{
-		if (waitpid(cmd_aux->pid, &status, 0) == -1)
+		if (waitpid(cmd_aux->pid, &g_exit_status, 0) == -1)
 			(perror("minishell:"), exit(1));
 		if (cmd_aux->next)
 			cmd_aux = cmd_aux->next;
@@ -110,7 +111,7 @@ void	manage_params_child(t_toolbox *tools, t_command *cmd)
 	cmd_rute = find_path(cmd->cmd, path_rutes);
 	if (!cmd_rute)
 		(perror("minishell:"), exit(1));
-	if (execve(cmd_rute, cmd_arg, tools->env) < 0) 
+	if (execve(cmd_rute, cmd_arg, tools->env) < 0)
 		(perror("minishell:"), exit(1));
 }
 

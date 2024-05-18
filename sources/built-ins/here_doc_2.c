@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc_2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: daparici <daparici@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jverdu-r <jverdu-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 23:45:25 by daparici          #+#    #+#             */
-/*   Updated: 2024/05/03 02:37:45 by daparici         ###   ########.fr       */
+/*   Updated: 2024/05/15 17:39:05 by jverdu-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-extern sig_atomic_t	g_exit_status;
+extern int	g_exit_status;
 
 int	expander_hdoc_2(char *str, int i)
 {
@@ -42,6 +42,7 @@ char	*expander_hdoc(char *str, char **env)
 	int				i;
 	char			*expand_str;
 	char			*copy_ex_str;
+	char			*aux;
 
 	i = 0;
 	expand_str = ft_strdup("");
@@ -57,8 +58,9 @@ char	*expander_hdoc(char *str, char **env)
 		else
 		{
 			copy_ex_str = expand_str;
-			expand_str = ft_strjoin(copy_ex_str, ft_substr(str, i, 1));
-			i++;
+			aux = ft_substr(str, i, 1);
+			expand_str = ft_strjoin(copy_ex_str, aux);
+			(free(copy_ex_str), free(aux), i++);
 		}
 	}
 	return (expand_str);

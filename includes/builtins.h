@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: daparici <daparici@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jorge <jorge@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 16:56:27 by daparici          #+#    #+#             */
-/*   Updated: 2024/05/03 00:37:46 by daparici         ###   ########.fr       */
+/*   Updated: 2024/05/15 11:41:49 by jorge            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,4 +66,7 @@ int		ft_cd(t_toolbox *tools);
 void	render_env(t_toolbox *tools);
 char	*get_env_dir(t_toolbox *tools, char *arg);
 char	*get_absolute_dir(t_toolbox *tools);
+
+//exit
+int		m_exit(t_toolbox *tools, t_command *cmd);
 #endif

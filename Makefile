@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: daparici <daparici@student.42.fr>          +#+  +:+       +#+         #
+#    By: jverdu-r <jverdu-r@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/24 15:20:41 by jverdu-r          #+#    #+#              #
-#    Updated: 2024/05/02 23:50:16 by daparici         ###   ########.fr        #
+#    Updated: 2024/05/15 17:35:20 by jverdu-r         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ LIBFT_A	=	$(addprefix $(LIBFT), libft.a)
 
 INCLUDE	=	includes -I $(READ)/include
 
-CFLAGS	=	-Wall -Werror -Wextra -g3 -I$(INCLUDE) -g
+CFLAGS	=	-Wall -Werror -Wextra -g3 -I$(INCLUDE) -fsanitize=address  -ggdb
 
 RM		=	rm -f
 
@@ -29,6 +29,7 @@ GNLPATH = $(addprefix ./includes/GetNextLine/,$(GNL))
 
 SRCS	=	sources/main.c \
 			sources/utils/signals.c \
+			sources/utils/signals_two.c \
 			sources/utils/minishell_loop.c \
 			sources/utils/utils.c \
 			sources/utils/utils_two.c \
@@ -44,6 +45,7 @@ SRCS	=	sources/main.c \
 			sources/parser/handle_redirs.c \
 			sources/error/errors.c \
 			sources/expander/expander_one.c \
+			sources/expander/expander_bis.c \
 			sources/expander/expander_utils_one.c \
 			sources/expander/expander_utils_two.c \
 			sources/built-ins/echo.c \
@@ -58,6 +60,7 @@ SRCS	=	sources/main.c \
 			sources/built-ins/cd.c \
 			sources/built-ins/here_doc.c \
 			sources/built-ins/here_doc_2.c \
+			sources/built-ins/exit.c \
 
 OBJS	=	$(SRCS:%.c=%.o)
 GNLOBJ 	= 	$(GNLPATH:.c=.o)

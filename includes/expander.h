@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: daparici <daparici@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jorge <jorge@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 17:59:56 by jverdu-r          #+#    #+#             */
-/*   Updated: 2024/03/19 20:31:47 by daparici         ###   ########.fr       */
+/*   Updated: 2024/05/09 17:27:12 by jorge            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,10 @@ int		*switch_qt(int *qt, char c);
 int		ovarpass(char *str, int i);
 char	*expnd(char *str, char **env);
 int		*init_qt(void);
-char	*expnd(char *str, char **env);
 char	*init_aux(void);
 char	*check_exp_redir(char *str, char **env);
 char	*check_str_two(char *str, char **env, int i, int *qt);
+char	*var_exp(char *str, char *aux, int i, char **env);
+char	*check_str(char *str, char **env);
+void	check_voids(t_command *cmd);
 #endif

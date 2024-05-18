@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jverdu-r <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jorge <jorge@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 15:40:45 by jverdu-r          #+#    #+#             */
-/*   Updated: 2023/11/03 17:13:21 by jverdu-r         ###   ########.fr       */
+/*   Updated: 2024/05/15 11:41:12 by jorge            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,18 @@
 t_command	*parser(t_toolbox *tools);
 int			token_reader(t_toolbox *tools);
 int			token_handler(t_toolbox *tools, int i);
-//t_token		check_token(char *tk, int i);
 char		*fully_prompt(char *input, char c);
+char		*get_input(char *str);
 t_redir		*redir_new(char *str);
 void		redir_addback(t_redir **head, t_redir *new);
 void		redir_show(t_redir *list, char *str);
 void		redir_free(t_redir *redir);
 void		cmd_show(t_command *cmd);
 void		cmd_free(t_command *cmd);
+void		scmd_free(t_command *cmd);
 void		get_fds(t_command *cmd);
 char		**lim_add(char **limts, int lim, char *str);
+char		*get_home(void);
+int			check_input_st(char *str);
+int			is_white_space(char c);
 #endif

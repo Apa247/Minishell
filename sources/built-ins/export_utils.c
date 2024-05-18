@@ -6,13 +6,11 @@
 /*   By: daparici <daparici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 17:52:40 by daparici          #+#    #+#             */
-/*   Updated: 2024/03/07 18:51:50 by daparici         ###   ########.fr       */
+/*   Updated: 2024/05/18 00:58:30 by daparici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-extern sig_atomic_t	g_exit_status;
 
 void	export_error(char *cmd_arg)
 {
@@ -57,6 +55,11 @@ int	check_parametres(char *cmd_arg)
 	int	i;
 
 	i = 0;
+	if (cmd_arg[i] == '=')
+	{
+		export_error(cmd_arg);
+		return (1);
+	}
 	while (cmd_arg[i] != '=' && cmd_arg[i])
 	{
 		if (ft_isdigit(cmd_arg[0]) || !cmd_arg[0])

@@ -3,23 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   expander_utils_two.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jverdu-r <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jverdu-r <jverdu-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 18:55:50 by jverdu-r          #+#    #+#             */
-/*   Updated: 2023/11/16 19:26:12 by jverdu-r         ###   ########.fr       */
+/*   Updated: 2024/05/16 18:54:41 by jverdu-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-extern sig_atomic_t	g_exit_status;
-
 int	ovarpass(char *str, int i)
 {
-	while (!is_space(str[i]) && str[i] != '\"' \
+	while (!is_white_space(str[i]) && str[i] != '\"' \
 		&& str[i] != '\'' && str[i])
 		i++;
-	if (str[i] == '\"' || str[i] == '\'' || is_space(str[i]))
+	if (str[i] == '\"' || str[i] == '\'' || is_white_space(str[i]))
+		i--;
+	if (!str[i])
 		i--;
 	return (i);
 }
@@ -36,9 +36,9 @@ int	*init_qt(void)
 
 char	*expnd(char *str, char **env)
 {
+	int		i;
 	char	*aux;
 	char	**r_var;
-	int	i;
 
 	aux = ft_strjoin(str, "=");
 	i = 0;

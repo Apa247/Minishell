@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   command_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: daparici <daparici@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jorge <jorge@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 12:48:17 by jverdu-r          #+#    #+#             */
-/*   Updated: 2024/02/06 17:51:19 by daparici         ###   ########.fr       */
+/*   Updated: 2024/05/17 08:30:23 by jorge            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-extern sig_atomic_t	g_exit_status;
 
 t_command	*init_cmd(void)
 {
@@ -50,7 +48,7 @@ void	comm_addback(t_command **head, t_command *new)
 	}
 }
 
-void	cmd_show(t_command *cmd)
+/*void	cmd_show(t_command *cmd)
 {
 	t_command	*aux;
 	t_redir		*in_aux;
@@ -94,7 +92,6 @@ void	cmd_show(t_command *cmd)
 				printf("out_file: %s\n", out_aux->file);
 				out_aux = out_aux->next;
 			}
-			
 		}
 		if (aux->in_files)
 		{
@@ -108,7 +105,7 @@ void	cmd_show(t_command *cmd)
 		printf("have to append: %d\n", aux->app);
 		aux = aux->next;
 	}
-}
+}*/
 
 void	scmd_free(t_command *cmd)
 {

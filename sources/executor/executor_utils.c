@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: daparici <daparici@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jverdu-r <jverdu-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 22:21:02 by davidaparic       #+#    #+#             */
-/*   Updated: 2024/03/20 19:39:04 by daparici         ###   ########.fr       */
+/*   Updated: 2024/05/15 19:13:30 by jverdu-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ char	*find_path(char *cmd, char **path)
 {
 	char	*tmp;
 	char	*aux;
+	char	*err;
 
 	if (!access(cmd, X_OK))
 		return (cmd);
@@ -50,7 +51,8 @@ char	*find_path(char *cmd, char **path)
 			free(tmp);
 			path++;
 		}
-		(perror(cmd), exit(1));
+		err = ft_strjoin(cmd, ": Command not found\n");
+		(ft_putstr_fd(err, 2), free(err), exit(127));
 	}
 	return (NULL);
 }
@@ -70,7 +72,7 @@ char	**fill_args(t_command *cmd)
 			i++;
 	else
 		i++;
-	n_args = ft_calloc(sizeof(char *), (i + 1));
+	n_args = ft_calloc(sizeof(char *), (i + 2));
 	n_args[0] = cmd->cmd;
 	i = 1;
 	if (aux->args)

@@ -3,16 +3,37 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: daparici <daparici@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jverdu-r <jverdu-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 12:58:17 by jverdu-r          #+#    #+#             */
-/*   Updated: 2024/03/20 19:08:36 by daparici         ###   ########.fr       */
+/*   Updated: 2024/05/16 18:35:13 by jverdu-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-extern sig_atomic_t	g_exit_status;
+extern int	g_exit_status;
+
+char	*get_input(char *str)
+{
+	int		len;
+	int		i;
+	char	*res;
+
+	if (str == NULL)
+		return (NULL);
+	len = ft_strlen(str);
+	res = ft_calloc(sizeof(char *), len);
+	i = 0;
+	while (i < len)
+	{
+		res[i] = str[i];
+		i++;
+	}
+	res[len] = 0;
+	free(str);
+	return (res);
+}
 
 int	handle_quotes(char *input)
 {
@@ -46,46 +67,48 @@ void	free_arr(char **arr)
 	int	i;
 
 	i = 0;
-	while (arr[i])
+	while (arr[i] != 0)
 	{
-		free(arr[i]);
+		if (arr[i])
+			free(arr[i]);
 		i++;
 	}
 	free(arr);
 }
 
-int	check_input_end(char c)
+int	check_input_end(char *c)
 {
-	if (c == '<' || c == '>')
+	int	len;
+
+	len = ft_strlen(c) - 1;
+	if (c[len] == '<' || c[len] == '>' || c[len] == '|')
+	{
+		printf("sintax parse error near '%c'\n", c[len]);
 		return (0);
+	}
 	return (1);
 }
 
 int	check_input(t_toolbox *tools)
 {
-	char	*aux;
 	char	*input;
 
-	input = readline("minishell>");
-	if (input)
+	input = get_input(readline("minishell>"));
+	if (!input)
+		exit_code(2);
+	if (input && ft_strlen(input) >= 1)
 	{
-		if (ft_strcmp("exit", input) == 0)
-			exit(0);
-		if (input[ft_strlen(input) - 1] == '|')
-		{
-			aux = fully_prompt(input, '|');
-			input = aux;
-		}
-		if (!check_input_end(input[ft_strlen(input) - 1]))
+		if (!check_input_end(input) || !check_input_st(input))
 		{
 			add_history(input);
 			free(input);
-			printf("sintax parse error\n");
+			g_exit_status = 2;
 			return (1);
 		}
 		tools->args = ft_strtrim(input, " ");
 		free(input);
 		return (1);
 	}
+	free(input);
 	return (0);
 }

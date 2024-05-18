@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   parse_envp.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: daparici <daparici@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jorge <jorge@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 12:33:17 by jverdu-r          #+#    #+#             */
-/*   Updated: 2023/12/05 18:16:13 by daparici         ###   ########.fr       */
+/*   Updated: 2024/05/15 11:18:46 by jorge            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-extern sig_atomic_t	g_exit_status;
 
 int	pwd_search(t_toolbox *tools)
 {
@@ -29,33 +27,10 @@ int	pwd_search(t_toolbox *tools)
 					7, ft_strlen(tools->env[i]) - 7);
 		if (!ft_strncmp(tools->env[i], "HOME=", 5))
 			tools->home_dir = ft_substr(tools->env[i],
-					5, ft_strlen(tools->env[i] - 5));
+					5, ft_strlen(tools->env[i]) - 5);
 		i++;
 	}
 	return (i);
-}
-
-char	*get_home(void)
-{
-	char	*aux;
-	char	*home;
-	char	*dir;
-	int		i[2];
-
-	i[0] = 0;
-	i[1] = 0;
-	dir = getcwd(NULL, 0);
-	while (dir[i[0]] && i[1] <= 2)
-	{
-		if (dir[i[0]] == '/')
-			i[1]++;
-		i[0]++;
-	}
-	aux = ft_substr(dir, 0, i[0]);
-	home = ft_strjoin("HOME=", aux);
-	free(aux);
-	free(dir);
-	return (home);
 }
 
 char	**new_env(void)
@@ -89,7 +64,7 @@ char	**st_envp(char **envp)
 		i++;
 	}
 	sorted[i] = 0;
-	sort_arr(sorted);
+	sorted = sort_arr(sorted);
 	return (sorted);
 }
 
@@ -121,7 +96,7 @@ char	**envp_dup(char	**envp, t_toolbox *tools)
 	i = 0;
 	while (envp[i])
 		i++;
-	tmp = ft_calloc(sizeof(char *), i + 1);
+	tmp = ft_calloc(sizeof(char *), i + 2);
 	if (!tmp)
 		return (NULL);
 	i = 0;
@@ -135,6 +110,7 @@ char	**envp_dup(char	**envp, t_toolbox *tools)
 		}
 		i++;
 	}
+	tmp[i] = 0;
 	tools->env = tmp;
 	return (tmp);
 }

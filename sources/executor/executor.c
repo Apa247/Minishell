@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: daparici <daparici@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jorge <jorge@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 16:53:02 by daparici          #+#    #+#             */
-/*   Updated: 2024/05/03 23:53:57 by daparici         ###   ########.fr       */
+/*   Updated: 2024/05/17 08:24:49 by jorge            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+extern int	g_exit_status;
 
 void	ft_executor(t_toolbox *tools)
 {
@@ -27,10 +29,18 @@ void	ft_executor(t_toolbox *tools)
 	}
 }
 
+void	ret_exit(void)
+{
+	if (g_exit_status > 10000)
+		g_exit_status = g_exit_status / 256;
+	if (g_exit_status == 2)
+		g_exit_status = 130;
+	if (g_exit_status == 256)
+		g_exit_status = 1;
+}
+
 void	simple_command(t_toolbox *tools, t_command *cmd)
 {
-	int	status;
-
 	cmd->pid = fork();
 	if (cmd->pid < 0)
 		(perror("minishell:"), exit(1));
@@ -41,7 +51,7 @@ void	simple_command(t_toolbox *tools, t_command *cmd)
 		if (cmd->heredoc && !cmd->args)
 		{
 			if (dup2(cmd->heredoc, 0) < 0)
-				(perror("minishell"), exit(1));
+				(perror("minishell"), exit(127));
 			close(cmd->heredoc);
 		}
 		manage_params_child(tools, cmd);
@@ -49,8 +59,9 @@ void	simple_command(t_toolbox *tools, t_command *cmd)
 	else
 	{
 		father_workout();
-		if (waitpid(cmd->pid, &status, 0) == -1)
+		if (waitpid(cmd->pid, &g_exit_status, 0) == -1)
 			(perror("minishell:"), exit(1));
+		ret_exit();
 	}
 }
 
@@ -68,6 +79,8 @@ int	ft_is_builtin(t_command *cmd)
 		return (0);
 	else if (ft_strcmp(cmd->cmd, "cd") == 0)
 		return (0);
+	else if (ft_strcmp(cmd->cmd, "exit") == 0)
+		return (0);
 	else
 		return (1);
 }
@@ -75,15 +88,17 @@ int	ft_is_builtin(t_command *cmd)
 void	ft_is_builtin_2(t_toolbox *tools, t_command *cmd)
 {
 	if (ft_strcmp(cmd->cmd, "pwd") == 0)
-		ft_pwd();
+		g_exit_status = ft_pwd();
 	else if (ft_strcmp(cmd->cmd, "echo") == 0)
-		ft_echo(cmd);
+		g_exit_status = ft_echo(cmd);
 	else if (ft_strcmp(cmd->cmd, "env") == 0)
-		ft_env(tools->env);
+		g_exit_status = ft_env(tools->env);
 	else if (ft_strcmp(cmd->cmd, "export") == 0)
-		ft_export(tools);
+		g_exit_status = ft_export(tools);
 	else if (ft_strcmp(cmd->cmd, "unset") == 0)
-		ft_unset(tools);
+		g_exit_status = ft_unset(tools);
 	else if (ft_strcmp(cmd->cmd, "cd") == 0)
-		ft_cd(tools);
+		g_exit_status = ft_cd(tools);
+	else if (ft_strcmp(cmd->cmd, "exit") == 0)
+		g_exit_status = m_exit(tools, cmd);
 }
