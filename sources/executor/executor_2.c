@@ -34,6 +34,7 @@ void	ft_executor_loop(t_command *cmd, t_toolbox *tools)
 		else
 			break ;
 	}
+	ret_exit();
 }
 
 void	recursive_ex(int *pre_pipe, t_command *cmd, t_toolbox *tools)

@@ -67,7 +67,7 @@ void	print_err(char *str, int c)
 	ft_putstr_fd("minishell: cd: ", 2);
 	ft_putstr_fd(str, 2);
 	if (c == 1)
-		ft_putstr_fd(" not set\n", 2);
+		ft_putstr_fd(": No such file or directory\n", 2);
 	else
 		ft_putchar_fd('\n', 2);
 }
@@ -95,6 +95,6 @@ int	ft_cd(t_toolbox *tools)
 			render_env(tools);
 	}
 	else
-		return (print_err("too many arguments\n", 0), EXIT_FAILURE);
+		return (print_err("too many arguments", 0), EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }

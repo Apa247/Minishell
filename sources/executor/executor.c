@@ -31,19 +31,12 @@ void	ft_executor(t_toolbox *tools)
 
 void	ret_exit(void)
 {
-	printf("exit: %d\n", g_exit_status);
 	if (g_exit_status > 255)
-		g_exit_status = g_exit_status / 256;
-	printf("exit: %d\n", g_exit_status);
-	if (g_exit_status < 0)
-		g_exit_status = 255 - g_exit_status;
-	printf("exit: %d\n", g_exit_status);
-	/*if (g_exit_status > 10000)
 		g_exit_status = g_exit_status / 256;
 	if (g_exit_status == 2)
 		g_exit_status = 130;
 	if (g_exit_status == 256)
-		g_exit_status = 1;*/
+		g_exit_status = 1;
 }
 
 void	simple_command(t_toolbox *tools, t_command *cmd)
