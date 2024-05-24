@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: daparici <daparici@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jorge <jorge@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 21:39:42 by davidaparic       #+#    #+#             */
-/*   Updated: 2024/05/18 01:25:47 by daparici         ###   ########.fr       */
+/*   Updated: 2024/05/24 09:14:59 by jorge            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ void	render_env(t_toolbox *tools)
 	char	*pwd;
 	char	*current_dir;
 
+	printf("tools->pwd: %s\n", tools->pwd);
 	current_dir = getcwd(NULL, 0);
 	if (current_dir != NULL)
 	{

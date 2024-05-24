@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jverdu-r <jverdu-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jorge <jorge@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 19:50:15 by daparici          #+#    #+#             */
-/*   Updated: 2024/05/15 17:43:48 by jverdu-r         ###   ########.fr       */
+/*   Updated: 2024/05/23 19:03:41 by jorge            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,8 @@ void	del_var(t_toolbox *tools, int i, int j)
 
 int	ft_unset(t_toolbox *tools)
 {
-	int	i;
-	int	j;
+	int		i;
+	int		j;
 
 	i = 0;
 	if (tools->cmd->args)

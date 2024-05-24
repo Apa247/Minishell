@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander_utils_one.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jverdu-r <jverdu-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jorge <jorge@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 19:21:11 by jverdu-r          #+#    #+#             */
-/*   Updated: 2024/05/18 13:19:10 by jverdu-r         ###   ########.fr       */
+/*   Updated: 2024/05/24 08:57:12 by jorge            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,16 +57,7 @@ char	*trimmed(char *str, int i, int j)
 		}
 	}
 	res[j] = 0;
-	free(str);
 	return (res);
-}
-
-int	is_space(char c)
-{
-	if (c == '\t' || c == '\n' || c == '\v'
-		|| c == '\f' || c == '\r' || c == ' ')
-		return (1);
-	return (0);
 }
 
 char	*var_find(char *str, int i, char **env)
@@ -74,17 +65,16 @@ char	*var_find(char *str, int i, char **env)
 	char	*aux;
 	char	*res;
 
-	i++;
 	aux = ft_calloc(sizeof(char), 1);
 	aux[0] = 0;
-	while (str[i] && !is_space(str[i]) && str[i] != '$' \
-		&& str[i] != '\"' && str[i] != '\'')
+	while (str[i] && (ft_isalpha(str[i]) || str[i] == '_' || \
+	ft_isdigit(str[i]) || str[i] == '?'))
 	{
 		res = charjoin(aux, str[i]);
 		aux = res;
 		i++;
 	}
-	if (!ft_strncmp(res, "?", 1))
+	if (res && !ft_strncmp(res, "?", 1))
 	{
 		res = ft_itoa(g_exit_status);
 		i = 0;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jverdu-r <jverdu-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jorge <jorge@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 17:44:34 by jverdu-r          #+#    #+#             */
-/*   Updated: 2024/05/15 19:11:13 by jverdu-r         ###   ########.fr       */
+/*   Updated: 2024/05/24 08:53:18 by jorge            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,9 @@ int	m_exit(t_toolbox *tools, t_command *cmd)
 	{
 		if (cmd->args[1])
 		{
+			ft_putstr_fd("exit\n", 2);
 			ft_putstr_fd("bash: exit: too many arguments\n", 2);
-			return (exit_clear(tools, 2));
+			return (1);
 		}
 		else
 		{

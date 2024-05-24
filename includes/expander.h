@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jorge <jorge@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jverdu-r <jverdu-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 17:59:56 by jverdu-r          #+#    #+#             */
-/*   Updated: 2024/05/09 17:27:12 by jorge            ###   ########.fr       */
+/*   Updated: 2024/05/22 16:34:53 by jverdu-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@
 void	expander(t_toolbox *tools);
 char	*charjoin(char *str, char c);
 char	*var_find(char *str, int i, char **env);
-int		is_space(char c);
 char	*trimmed(char *str, int i, int j);
 int		*switch_qt(int *qt, char c);
 int		ovarpass(char *str, int i);
@@ -32,4 +31,6 @@ char	*check_str_two(char *str, char **env, int i, int *qt);
 char	*var_exp(char *str, char *aux, int i, char **env);
 char	*check_str(char *str, char **env);
 void	check_voids(t_command *cmd);
+int		ft_exp_stop(char c);
+char	*get_exp_value(char *str);
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jverdu-r <jverdu-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jorge <jorge@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 09:45:18 by jverdu-r          #+#    #+#             */
-/*   Updated: 2024/05/18 13:43:20 by jverdu-r         ###   ########.fr       */
+/*   Updated: 2024/05/23 16:46:40 by jorge            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,11 @@ int	check_syntax(t_lexer *tk_list)
 			check_lstr(list);
 		if (list->token)
 		{
-			if (!list->next->str && list->token != PIPE)
+			if (list->token != PIPE && !list->next->str)
 				return (error_token(list->token));
 			else if (list->token == PIPE && list->next->token == PIPE)
 				return (error_token(list->token));
-			else if (list->next->token == 0 && !list->next->str)
+			else if (list->token > 0 && !list->next->str)
 				return (error_token(list->token));
 		}
 		list = list->next;

@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   executor_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jverdu-r <jverdu-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jorge <jorge@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 22:21:02 by davidaparic       #+#    #+#             */
-/*   Updated: 2024/05/15 19:13:30 by jverdu-r         ###   ########.fr       */
+/*   Updated: 2024/05/23 18:33:27 by jorge            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
 
 void	executor_error(t_command *cmd, char *str)
 {
@@ -92,10 +91,23 @@ char	**fill_args(t_command *cmd)
 
 char	*find_paths(char **envp)
 {
+	int	i;
+
+	i = 0;
+	while (envp[i])
+	{
+		if (ft_strnstr(envp[i], "PATH", 4))
+			return (envp[i] + 5);
+		i++;
+	}
+	return (NULL);
+}
+/*char	*find_paths(char **envp)
+{
 	while (*envp && ft_strncmp("PATH", *envp, 4))
 		envp++;
 	if (*envp)
 		return (*envp + 5);
 	else
 		return (NULL);
-}
+}*/

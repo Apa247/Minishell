@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jverdu-r <jverdu-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jorge <jorge@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 12:58:17 by jverdu-r          #+#    #+#             */
-/*   Updated: 2024/05/16 18:35:13 by jverdu-r         ###   ########.fr       */
+/*   Updated: 2024/05/23 15:48:53 by jorge            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,12 @@ int	handle_quotes(char *input)
 {
 	int	qt;
 	int	i;
+	int	len;
 
 	qt = -1;
 	i = 0;
-	while (input[i])
+	len = ft_strlen(input);
+	while (i < len)
 	{
 		if (input[i] == '\'' || input[i] == '\"')
 		{
@@ -78,12 +80,18 @@ void	free_arr(char **arr)
 
 int	check_input_end(char *c)
 {
-	int	len;
+	int		len;
 
 	len = ft_strlen(c) - 1;
 	if (c[len] == '<' || c[len] == '>' || c[len] == '|')
 	{
-		printf("sintax parse error near '%c'\n", c[len]);
+		if (len > 0 && is_white_space(c[len - 1]))
+			print_err_token(c, len);
+		else
+		{
+			ft_putstr_fd("minishell: sintax error near", 2);
+			ft_putstr_fd(" unexpected token `newline'\n", 2);
+		}
 		return (0);
 	}
 	return (1);
@@ -98,7 +106,7 @@ int	check_input(t_toolbox *tools)
 		exit_code(2);
 	if (input && ft_strlen(input) >= 1)
 	{
-		if (!check_input_end(input) || !check_input_st(input))
+		if (!check_input_st(input) || !check_input_end(input))
 		{
 			add_history(input);
 			free(input);

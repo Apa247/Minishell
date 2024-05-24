@@ -6,11 +6,32 @@
 /*   By: jorge <jorge@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 19:06:57 by jverdu-r          #+#    #+#             */
-/*   Updated: 2024/05/17 21:00:47 by jorge            ###   ########.fr       */
+/*   Updated: 2024/05/23 15:51:54 by jorge            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+char	*get_exp_value(char *str)
+{
+	int		i;
+	char	*value;
+
+	i = 0;
+	while (str && str[i] != '=')
+		i++;
+	value = ft_substr(str, i + 1, ft_strlen(str) - 1);
+	return (value);
+}
+
+int	ft_exp_stop(char c)
+{
+	if (c == '_' || c == '?' || \
+		ft_isalpha(c) || ft_isdigit(c))
+		return (0);
+	else
+		return (1);
+}
 
 char	*check_str_two(char *str, char **env, int i, int *qt)
 {
@@ -44,13 +65,11 @@ char	*check_str(char *str, char **env)
 {
 	int		*qt;
 	int		i;
-	char	*res;
 	char	*aux;
 
 	qt = init_qt();
 	i = 0;
 	aux = check_str_two(str, env, i, qt);
 	free(qt);
-	res = trimmed(aux, 0, 0);
-	return (res);
+	return (aux);
 }

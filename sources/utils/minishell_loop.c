@@ -6,7 +6,7 @@
 /*   By: jorge <jorge@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 12:14:37 by jverdu-r          #+#    #+#             */
-/*   Updated: 2024/05/17 08:30:33 by jorge            ###   ########.fr       */
+/*   Updated: 2024/05/24 09:14:41 by jorge            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	tools_load(t_toolbox *tools)
 
 int	exit_code(int ex)
 {
-	printf("\nexit\n");
+	printf("exit\n");
 	rl_clear_history();
 	exit(ex);
 }
@@ -45,7 +45,10 @@ void	routine(t_toolbox *tools)
 {
 	tools->cmd = parser(tools);
 	if (get_fds(tools->cmd) == 0)
+	{
+		//cmd_show(tools->cmd);
 		ft_executor(tools);
+	}
 }
 
 int	minishell_loop(t_toolbox *tools)
@@ -64,7 +67,9 @@ int	minishell_loop(t_toolbox *tools)
 				if (tools->lexer_list)
 				{
 					if (!check_syntax(tools->lexer_list))
+					{
 						routine(tools);
+					}
 				}
 				else
 					g_exit_status = 0;
