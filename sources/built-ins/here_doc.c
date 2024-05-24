@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jorge <jorge@student.42.fr>                +#+  +:+       +#+        */
+/*   By: daparici <daparici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 16:03:10 by daparici          #+#    #+#             */
-/*   Updated: 2024/05/23 17:29:02 by jorge            ###   ########.fr       */
+/*   Updated: 2024/05/24 13:58:30 by daparici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	child_control(int *pipe1, char **env, t_command *cmd, int i)
 	str_trimed = trimmed(cmd->limiter[i], 0, 0);
 	line = get_next_line(0);
 	while (ft_strlen(str_trimed) != (ft_strlen(line) - 1)
-		|| ft_strncmp(line, str_trimed, ft_strlen(str_trimed) - 1))
+		|| ft_strncmp_2(line, str_trimed, ft_strlen(str_trimed) - 1))
 	{
 		if (line == NULL)
 			(printf("\n"), exit(0));

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jverdu-r <jverdu-r@student.42.fr>          +#+  +:+       +#+         #
+#    By: daparici <daparici@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/24 15:20:41 by jverdu-r          #+#    #+#              #
-#    Updated: 2024/05/21 16:31:09 by jverdu-r         ###   ########.fr        #
+#    Updated: 2024/05/24 13:40:55 by daparici         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ LIBFT_A	=	$(addprefix $(LIBFT), libft.a)
 
 INCLUDE	=	includes -I $(READ)/include
 
-CFLAGS	=	-Wall -Werror -Wextra -g3 -I$(INCLUDE) -fsanitize=address  -ggdb
+CFLAGS	=	-Wall -Werror -Wextra -g3 -I$(INCLUDE) -fsanitize=address -fsanitize=leak -ggdb
 
 RM		=	rm -f
 
