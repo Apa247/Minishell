@@ -6,7 +6,7 @@
 /*   By: daparici <daparici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 16:03:10 by daparici          #+#    #+#             */
-/*   Updated: 2024/05/24 13:58:30 by daparici         ###   ########.fr       */
+/*   Updated: 2024/05/24 14:38:03 by daparici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,8 @@ char	*find_variable(char *str, unsigned int i)
 	j = i;
 	while (str[i] && ((str[i] >= 'a' && str[i] <= 'z')
 			|| (str[i] >= 'A' && str[i] <= 'Z')
-			|| (str[i] >= '0' && str[i] <= '9')))
+			|| (str[i] >= '0' && str[i] <= '9')
+			|| str[i] == '_'))
 		i++;
 	aux = ft_substr(str, j, (i - j));
 	var = ft_strjoin(aux, "=");
