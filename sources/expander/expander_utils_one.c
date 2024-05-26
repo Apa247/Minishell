@@ -6,7 +6,7 @@
 /*   By: jorge <jorge@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 19:21:11 by jverdu-r          #+#    #+#             */
-/*   Updated: 2024/05/24 08:57:12 by jorge            ###   ########.fr       */
+/*   Updated: 2024/05/24 18:52:32 by jorge            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,14 +67,15 @@ char	*var_find(char *str, int i, char **env)
 
 	aux = ft_calloc(sizeof(char), 1);
 	aux[0] = 0;
+	res = NULL;
 	while (str[i] && (ft_isalpha(str[i]) || str[i] == '_' || \
-	ft_isdigit(str[i]) || str[i] == '?'))
+		ft_isdigit(str[i]) || str[i] == '?'))
 	{
 		res = charjoin(aux, str[i]);
 		aux = res;
 		i++;
 	}
-	if (res && !ft_strncmp(res, "?", 1))
+	if (res && res[0] == '?')
 	{
 		res = ft_itoa(g_exit_status);
 		i = 0;
