@@ -22,7 +22,7 @@ INCLUDE	=	includes -I $(READ)/include
 
 CFLAGS	=	-Wall -Werror -Wextra -g3 -I$(INCLUDE) -fsanitize=address  -ggdb
 
-RM		=	rm -f
+RM		=	rm -f 
 
 GNL = get_next_line.c get_next_line_utils.c
 GNLPATH = $(addprefix ./includes/GetNextLine/,$(GNL))
