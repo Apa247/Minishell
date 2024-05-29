@@ -3,35 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   expander_utils_one.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jorge <jorge@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jverdu-r <jverdu-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 19:21:11 by jverdu-r          #+#    #+#             */
-/*   Updated: 2024/05/24 18:52:32 by jorge            ###   ########.fr       */
+/*   Updated: 2024/05/29 19:34:06 by jverdu-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
 extern int	g_exit_status;
-
-int	*switch_qt(int *qt, char c)
-{
-	if (c == '\'')
-	{
-		if (qt[1] == 0 && qt[0] == 0)
-			qt[1] = 1;
-		else if (qt[1] == 1 && qt[0] == 0)
-			qt[1] = 0;
-	}
-	if (c == '\"')
-	{
-		if (qt[1] == 0 && qt[0] == 0)
-			qt[0] = 1;
-		else if (qt[1] == 0 && qt[0] == 1)
-			qt[0] = 0;
-	}
-	return (qt);
-}
 
 char	*trimmed(char *str, int i, int j)
 {
@@ -106,4 +87,25 @@ char	*charjoin(char *str, char c)
 	res[i + 1] = 0;
 	free(str);
 	return (res);
+}
+
+char	*get_exp_value(char *str)
+{
+	int		i;
+	char	*value;
+
+	i = 0;
+	while (str && str[i] != '=')
+		i++;
+	value = ft_substr(str, i + 1, ft_strlen(str) - 1);
+	return (value);
+}
+
+int	ft_exp_stop(char c)
+{
+	if (c == '_' || c == '?' || \
+		ft_isalpha(c) || ft_isdigit(c))
+		return (0);
+	else
+		return (1);
 }

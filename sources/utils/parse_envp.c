@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_envp.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jorge <jorge@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jverdu-r <jverdu-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 12:33:17 by jverdu-r          #+#    #+#             */
-/*   Updated: 2024/05/24 09:14:14 by jorge            ###   ########.fr       */
+/*   Updated: 2024/05/28 19:56:30 by jverdu-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,14 @@ char	**new_env(void)
 	char	*aux;
 
 	aux = getcwd(NULL, 0);
-	env = ft_calloc(sizeof(char *), 4);
+	env = ft_calloc(sizeof(char *), 6);
 	env[0] = ft_strjoin("PWD=", aux);
-	env[1] = "SHLVL=1";
-	env[2] = "_=/usr/bin/env";
-	env[3] = 0;
+	env[1] = ft_strdup("OLDPWD");
+	env[2] = ft_strdup("SHLVL=1");
+	env[3] = ft_strdup("_=/usr/bin/env");
+	env[4] = ft_strdup("PATH=/usr/local/sbin:/usr/local/bin:\
+/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin");
+	env[5] = 0;
 	free(aux);
 	return (env);
 }
@@ -68,26 +71,6 @@ char	**st_envp(char **envp)
 	sorted[i] = 0;
 	sorted = sort_arr(sorted);
 	return (sorted);
-}
-
-void	show_env(t_toolbox *tools)
-{
-	int	i;
-
-	i = 0;
-	printf("\n---unsorted env---\n");
-	while (tools->env[i])
-	{
-		printf("%s\n", tools->env[i]);
-		i++;
-	}
-	i = 0;
-	//printf("\n---sorted env---\n");
-	/*while (tools->sort_env[i])
-	{
-		printf("%s\n", tools->sort_env[i]);
-		i++;
-	}*/
 }
 
 char	**envp_dup(char	**envp, t_toolbox *tools)

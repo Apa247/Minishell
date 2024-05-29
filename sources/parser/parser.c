@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: daparici <daparici@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jverdu-r <jverdu-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 18:38:55 by jverdu-r          #+#    #+#             */
-/*   Updated: 2024/05/25 17:57:50 by daparici         ###   ########.fr       */
+/*   Updated: 2024/05/29 18:57:12 by jverdu-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,11 @@ t_lexer	*redir_add(t_command *cmd, t_lexer *list)
 {
 	if (list->token == LESS)
 		redir_addback(&cmd->in_files, \
-			redir_new(trimmed(list->next->str, 0, 0)));
+			redir_new(ft_strdup(list->next->str)));
 	if (list->token == GREAT || list->token == GREAT_GREAT)
 	{
 		redir_addback(&cmd->out_files, \
-			redir_new(trimmed(list->next->str, 0, 0)));
+			redir_new(ft_strdup(list->next->str)));
 		if (list->token == GREAT_GREAT)
 			cmd->app = 1;
 		else
@@ -59,7 +59,7 @@ void	get_arg(t_command *cmd, char *str)
 	cmd->args = malloc(sizeof(char *) * 2);
 	if (!cmd->args)
 		cmd->args = NULL;
-	cmd->args[0] = trimmed(str, 0, 0);
+	cmd->args[0] = ft_strdup(str);
 	cmd->args[1] = 0;
 }
 
@@ -78,7 +78,7 @@ void	get_new_arg(t_command *cmd, char *str)
 		aux[i] = ft_strdup(cmd->args[i]);
 		i++;
 	}
-	aux[i] = trimmed(str, 0, 0);
+	aux[i] = ft_strdup(str);
 	aux[i + 1] = 0;
 	free_arr(cmd->args);
 	cmd->args = aux;
@@ -97,7 +97,7 @@ t_command	*parser(t_toolbox *tools)
 			cmd = cmd->next;
 		else if (aux->token > 1)
 			aux = redir_add(cmd, aux);
-		else if (!cmd->cmd && !aux->token)
+		else if (!cmd->cmd && aux->token == 0)
 			cmd->cmd = ft_strdup(aux->str);
 		else
 		{

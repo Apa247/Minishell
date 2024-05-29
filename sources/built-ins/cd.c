@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: daparici <daparici@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jverdu-r <jverdu-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 21:39:42 by davidaparic       #+#    #+#             */
-/*   Updated: 2024/05/24 14:03:10 by daparici         ###   ########.fr       */
+/*   Updated: 2024/05/26 16:35:10 by jverdu-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int	ft_cd(t_toolbox *tools)
 	{
 		dir = get_env_dir(tools, "HOME=");
 		if (!dir || chdir(dir) == -1)
-			ft_putstr_fd("minishell: cd: HOME not set\n", 2);
+			return (ft_putstr_fd("minishell: cd: HOME not set\n", 2), 1);
 		else
 			render_env(tools);
 	}

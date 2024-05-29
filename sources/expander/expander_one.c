@@ -3,37 +3,38 @@
 /*                                                        :::      ::::::::   */
 /*   expander_one.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: daparici <daparici@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jverdu-r <jverdu-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 19:06:57 by jverdu-r          #+#    #+#             */
-/*   Updated: 2024/05/25 17:58:20 by daparici         ###   ########.fr       */
+/*   Updated: 2024/05/29 19:33:35 by jverdu-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-char	*get_exp_value(char *str)
+char	*expand(char *str, int i, char **env)
 {
-	int		i;
-	char	*value;
+	char	*aux;
+	char	*res;
 
-	i = 0;
-	while (str && str[i] != '=')
+	res = ft_strdup("");
+	i++;
+	while (str[i] && str[i] != '\"')
+	{
+		aux = res;
+		if (str[i] == '$' && str[i + 1])
+		{
+			res = var_exp(str, aux, i, env);
+			i = ovarpass(str, i);
+		}
+		else
+			res = charjoin(aux, str[i]);
 		i++;
-	value = ft_substr(str, i + 1, ft_strlen(str) - 1);
-	return (value);
+	}
+	return (res);
 }
 
-int	ft_exp_stop(char c)
-{
-	if (c == '_' || c == '?' || \
-		ft_isalpha(c) || ft_isdigit(c))
-		return (0);
-	else
-		return (1);
-}
-
-char	*check_str_two(char *str, char **env, int i, int *qt)
+char	*noqt(char *str, int i, char **env)
 {
 	char	*aux;
 	char	*res;
@@ -41,35 +42,70 @@ char	*check_str_two(char *str, char **env, int i, int *qt)
 	res = ft_strdup("");
 	while (str[i])
 	{
+		if (str[i] == '\"' || str[i] == '\'')
+			break ;
 		aux = res;
-		if (str[i] == '\'' || str[i] == '\"')
-			qt = switch_qt(qt, str[i]);
-		if (qt[0] == 0 && qt[1] == 1)
-			res = charjoin(aux, str[i]);
-		if ((qt[0] == 0 && qt[1] == 0) || (qt[0] == 1 && qt[1] == 0))
+		if (str[i] == '$' && str[i + 1])
 		{
-			if (str[i] == '$' && str[i + 1])
-			{
-				res = var_exp(str, aux, i, env);
-				i = ovarpass(str, i);
-			}
-			else
-				res = charjoin(aux, str[i]);
+			res = var_exp(str, aux, i, env);
+			i = ovarpass(str, i);
 		}
+		else
+			res = charjoin(aux, str[i]);
 		i++;
 	}
 	return (res);
 }
 
-char	*check_str(char *str, char **env)
+char	*extract(char *str, int i)
 {
-	int		*qt;
-	int		i;
-	char	*aux;
+	int		j;
+	char	*res;
 
-	qt = init_qt();
-	i = 0;
-	aux = check_str_two(str, env, i, qt);
-	free(qt);
-	return (aux);
+	j = i + 1;
+	while (str[j] && str[j] != '\'')
+		j++;
+	j--;
+	res = ft_substr(str, i + 1, j - i);
+	return (res);
+}
+
+char	*quoted(char *str, int i, char **env)
+{
+	char	*res;
+
+	res = NULL;
+	if (str[i] == '\'')
+		res = extract(str, i);
+	else if (str[i] == '\"')
+		res = expand(str, i, env);
+	return (res);
+}
+
+char	*expander(char *str, char **env, int i)
+{
+	char	*aux;
+	char	*res;
+	char	*exp;
+
+	res = ft_strdup("");
+	while (str[i])
+	{
+		aux = res;
+		if (str[i] && (str[i] == '\"' || str[i] == '\''))
+		{
+			exp = quoted(str, i, env);
+			i = check_next(str, i, str[i]);
+			res = ft_strjoin(aux, exp);
+			(free(aux), free(exp), i++);
+		}
+		else if (str[i] && str[i] != '\'' && str[i] != '\"')
+		{
+			exp = noqt(str, i, env);
+			i = check_next(str, i, 'c');
+			res = ft_strjoin(aux, exp);
+			(free(aux), free(exp));
+		}
+	}
+	return (res);
 }

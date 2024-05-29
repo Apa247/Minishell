@@ -6,7 +6,7 @@
 /*   By: jverdu-r <jverdu-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 22:23:21 by davidaparic       #+#    #+#             */
-/*   Updated: 2024/05/22 17:38:30 by jverdu-r         ###   ########.fr       */
+/*   Updated: 2024/05/28 19:50:51 by jverdu-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,9 @@ void	manage_params_child(t_toolbox *tools, t_command *cmd)
 	cmd_arg = fill_args(cmd);
 	if (!cmd_arg)
 		(executor_error(cmd, "error in arguments"), exit(1));
+	if (!access(cmd->cmd, X_OK))
+		if (execve(cmd->cmd, cmd_arg, tools->env) < 0)
+			(executor_error(cmd, "execve error"), exit(1));
 	path_rute = find_paths(tools->env);
 	if (!path_rute)
 		(executor_error(cmd, ": no such file or directory"), exit(127));
@@ -124,7 +127,7 @@ void	heredoc_child(int *pre_p, int *ac_p, t_command *cmd)
 	if (!cmd->next)
 		close(ac_p[1]);
 	manage_dups(cmd, pre_p, ac_p);
-	if (cmd->heredoc && !cmd->args && cmd->in_fd <= 2)
+	if (cmd->heredoc && !cmd->args)
 	{
 		if (dup2(cmd->heredoc, 0) < 0)
 			(perror("minishell"), exit(1));

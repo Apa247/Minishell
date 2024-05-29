@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: daparici <daparici@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jverdu-r <jverdu-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 19:50:15 by daparici          #+#    #+#             */
-/*   Updated: 2024/05/25 02:16:33 by daparici         ###   ########.fr       */
+/*   Updated: 2024/05/28 20:04:35 by jverdu-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,13 @@ void	del_var(t_toolbox *tools, int i, int j)
 	if (!ft_strncmp(tools->env[j], tools->cmd->args[i], \
 			lenght_to_equal(tools->cmd->args[i])))
 	{
-		tmp = delete_variable(tools->env, j);
-		free_arr(tools->env);
-		tools->env = tmp;
+		if ((int)ft_strlen(tools->cmd->args[i]) \
+			== lenght_to_equal(tools->env[j]))
+		{
+			tmp = delete_variable(tools->env, j);
+			free_arr(tools->env);
+			tools->env = tmp;
+		}
 	}
 }
 

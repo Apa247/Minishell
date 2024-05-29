@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_loop.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: daparici <daparici@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jverdu-r <jverdu-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 12:14:37 by jverdu-r          #+#    #+#             */
-/*   Updated: 2024/05/25 18:12:00 by daparici         ###   ########.fr       */
+/*   Updated: 2024/05/29 18:56:45 by jverdu-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,7 @@ void	routine(t_toolbox *tools)
 {
 	tools->cmd = parser(tools);
 	if (get_fds(tools->cmd) == 0)
-	{
-		//cmd_show(tools->cmd);
 		ft_executor(tools);
-	}
 }
 
 int	minishell_loop(t_toolbox *tools)
@@ -63,8 +60,7 @@ int	minishell_loop(t_toolbox *tools)
 			add_history(tools->args);
 			if (!handle_quotes(tools->args))
 			{
-				token_reader(tools);
-				if (tools->lexer_list)
+				if (!token_reader(tools) && tools->lexer_list)
 				{
 					if (!check_syntax(tools->lexer_list))
 					{
@@ -72,7 +68,7 @@ int	minishell_loop(t_toolbox *tools)
 					}
 				}
 				else
-					g_exit_status = 0;
+					g_exit_status = 127;
 			}
 			tools_reload(tools);
 		}

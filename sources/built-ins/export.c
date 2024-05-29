@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: daparici <daparici@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jverdu-r <jverdu-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 20:51:30 by davidaparic       #+#    #+#             */
-/*   Updated: 2024/05/25 01:53:52 by daparici         ###   ########.fr       */
+/*   Updated: 2024/05/28 20:08:00 by jverdu-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,22 @@ void	print_export(char **env)
 {
 	int	i;
 	int	k;
+	int	bool;
 
 	i = 0;
 	while (env[i])
 	{
+		bool = 0;
 		k = 0;
 		ft_putstr_fd("declare -x ", STDOUT_FILENO);
 		while (env[i][k])
 		{
 			ft_putchar_fd(env[i][k], STDOUT_FILENO);
-			if (env[i][k++] == '=')
+			if (env[i][k++] == '=' && bool == 0)
+			{
 				ft_putchar_fd('\"', STDOUT_FILENO);
+				bool = 1;
+			}
 		}
 		if (ft_strchr(env[i], '='))
 			ft_putchar_fd('\"', STDOUT_FILENO);
@@ -48,6 +53,8 @@ char	**add_variable(char **sort_env, char *cmd_arg)
 	if (!copy_env)
 		return (NULL);
 	i = 0;
+	if (!sort_env[0])
+		copy_env[0] = ft_strdup(cmd_arg);
 	while (sort_env[i])
 	{
 		if (!sort_env[i + 1])
